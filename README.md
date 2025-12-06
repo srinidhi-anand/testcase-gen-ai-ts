@@ -33,3 +33,17 @@ pnpm run dev
 
 ## License
 Apache License 2.0
+
+## feature roadmap
+
+- ✅ Read the files in src folder.
+- ✅ Generate test case for each function in a file.
+- ✅ Based on AI model selection, generate test case to a test file under tests suite folder.
+- ✅ Tests folder will be created in the root directory if not exists already.
+- ✅ Test file name creation will be based on the function name.
+- ✅ Test case generation will be using on jest.
+- ❌ Extended support for other test frameworks.
+- ❌ Extended support for other files other than typescript.
+- ❌ Extended support for API test cases including Functional test cases.
+- ✅ AI model selection will be configurable.
+- ❌ Function name and file path will be provided as input to the AI model to generate test case.
