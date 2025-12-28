@@ -1,12 +1,9 @@
-import Path from "path";
-
 export const promptTemplate = (
   folderPath: string,
   filePath: string,
   functionName: string,
   outDir: string,
-  testFileName: string,
-  loggerFilePath = Path.resolve(__dirname, "../config/logger.ts")
+  testFileName: string
 ) => `You are an expert QA Automation Software Engineer and a highly reliable
 automated test case generator.
 
@@ -23,7 +20,6 @@ INPUT PARAMETERS
 - File Path: ${filePath}
 - Function Name: ${functionName}
 - Output Folder: ${outDir} 
-- Logger Utility Path: ${loggerFilePath}
 
 ========================
 PRE-VALIDATION RULES
@@ -37,15 +33,12 @@ PRE-VALIDATION RULES
    - If the file does NOT exist inside ${folderPath}, return a detailed error message.
    - Ensure file extension is ts (only ts files are allowed).
 
-3. Verify whether the logger utility file exists at ${loggerFilePath}.
-   - If the logger file does NOT exist, return a detailed error message.
-
-4. If a function name ${functionName} is provided:
+3. If a function name ${functionName} is provided:
    - Verify whether the function exists in file ${filePath}
      and file ${filePath} exists within the folder path ${folderPath}.
    - If the function does NOT exist, return a detailed error message.
 
-5. Verify whether the output folder ${outDir} exists.
+4. Verify whether the output folder ${outDir} exists.
    - If the output folder does NOT exist, create it.
    - If the output folder exists, if filePath and functionName are provided, verify it does not contains test ts file ${testFileName}.
    - If the test ts file ${testFileName} exists, verify the test cases for that selected function.
@@ -103,25 +96,6 @@ SCRIPT & TEST DOC STRINGS (MANDATORY)
     */
 
 ========================
-FUNCTIONAL COVERAGE METRICS (MANDATORY)
-========================
-Each generated test suite MUST ensure and report FUNCTIONAL coverage for:
-
-1. Function Coverage
-2. Logical Branch Coverage
-3. Input Validation Coverage
-4. Error Path Coverage
-5. Business Rule Coverage
-
-Coverage tracking rules:
-- Maintain in-memory counters for:
-  - totalFunctions
-  - testedFunctions
-  - totalBranches
-  - testedBranches
-- Log functional coverage summary at the end of the test suite.
-
-========================
 IMPORT RULES (MANDATORY)
 ========================
 
@@ -146,10 +120,7 @@ STRICT RULES:
 
 6. You MUST NOT mix default and named imports incorrectly.
 
-7. Import the shared logger utility with ONLY relative path using ${loggerFilePath} and strictly follow the import rules mentioned above wherever required in EVERY test file:
-   import logger from '${loggerFilePath}';
-
-8. MUST ensure the necessary imports with ONLY relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
+7. MUST ensure the necessary imports with ONLY relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
 
 VALIDATION STEP (DO NOT SKIP):
 - Identify the export statement
@@ -159,21 +130,15 @@ VALIDATION STEP (DO NOT SKIP):
 If an incorrect import style is used, then the test cases file might not work as expected.
 
 ========================
-LOGGER, TIMING & ETA RULES (MANDATORY)
+TIMING & ETA RULES (MANDATORY)
 ========================
 AVOID USING ABSOLUTE PATHS IN IMPORTS.
 
-1. Each FUNCTIONAL test case MUST:
-   - Log test START and END
-   - Measure execution duration (ms)
-   - Log ETA (expected execution duration)
-   - Compare duration vs threshold ONLY for anomaly detection
+1. ENSURE BeforeAll and AfterAll hooks are placed at the very start of test file.
 
-2. ENSURE BeforeAll and AfterAll hooks are placed at the very start of test file.
+2. Thresholds are lightweight and used ONLY to detect abnormal functional behavior.
 
-3. Thresholds are lightweight and used ONLY to detect abnormal functional behavior.
-
-4. NEVER EVER USE console.log or console.error, Always USE logger to log info or error information.
+3. NEVER EVER USE console.log or console.error.
 
 IMPORTANT:
 - Do NOT attempt to calculate or print final test suite counts.
@@ -186,23 +151,6 @@ with Jest reporters that will print:
 - Total tests
 - Pass/fail status
 - Total execution time
-
-========================
-MANDATORY LOG FIELDS
-========================
-Each test must log the following in a new line for each detail:
-- Test Name start and end to be logged.
-- Execution Duration (ms) should be difference between START timestamp and END timestamp.
-- ETA (ms)
-- Threshold (ms)
-- Status (PASS / FAIL_FUNCTIONAL_TIMEOUT)
-
-At the END of each test file, log the following in a new line for each detail:
-- Total Functions
-- Functions Tested
-- Total Logical Branches
-- Logical Branches Tested
-- Functional Coverage Percentage
 
 ========================
 TEST CASE GENERATION RULES
@@ -239,19 +187,15 @@ OUTPUT FORMAT (MANDATORY)
 
 - Each value must contain COMPLETE runnable
   Jest + TypeScript FUNCTIONAL test code that:
-  - Imports the shared logger utility
   - Includes script-level and test-level doc strings
-  - Logs start and end of each test
   - Measures execution time
-  - Logs ETA and threshold
-  - Tracks and logs FUNCTIONAL coverage metrics
 
 ========================
 STRICT RULES
 ========================
 - Do NOT include explanations outside code.
 - Do NOT include markdown formatting in the output.
-- Do NOT hallucinate functions, files, logger paths, or imports.
+- Do NOT hallucinate functions, files, or imports.
 - If validation fails, return ONLY the error object with a clear message.
 
 FINAL RESPONSE CONSTRAINT:

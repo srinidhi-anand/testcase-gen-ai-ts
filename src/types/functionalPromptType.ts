@@ -2,8 +2,7 @@
 export interface PromptInput {
   folderPath: string;
   filePath: string;
-  functionName?: string;
+  functionName: string;
   outDir: string;
-  testFileName?: string;
-  loggerFilePath: string;
+  testFileName: string;
 }
