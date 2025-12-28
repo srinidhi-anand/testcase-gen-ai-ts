@@ -43,7 +43,7 @@ const inputPrompt: functionalTypes.PromptInput[] = [
 
 ## License
 
-Apache License 2.0
+MIT
 
 ## feature roadmap
 
