@@ -1,6 +1,6 @@
 {
   "name": "testcase-gen-ai-ts",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "AI-Powered Jest Test Case Generator for TypeScript (Node.js)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
