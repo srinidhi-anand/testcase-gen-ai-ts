@@ -4,5 +4,5 @@ export interface PromptInput {
   filePath: string;
   functionName: string;
   outDir: string;
-  testFileName: string;
+  testFileName?: string;
 }

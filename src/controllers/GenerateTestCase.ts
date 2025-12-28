@@ -19,7 +19,12 @@ export const generateTests = async (
 ) => {
   for (const inputPrompt of inputPromptDetails) {
     logger.info(`inputPromptDetails : ${JSON.stringify(inputPrompt)}`);
-    inputPrompt.testFileName = fileNameFramer(inputPrompt);
+    // if no test file name is provided, generate it based on function name
+    // else use the provided test file name
+    if (!inputPrompt.testFileName) {
+      inputPrompt.testFileName = fileNameFramer(inputPrompt);
+    }
+    // validate test file if it exists else create it
     const validateTestFlow = validateTestFile(
       inputPrompt.outDir,
       inputPrompt.testFileName,
