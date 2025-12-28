@@ -31,7 +31,14 @@ export const validateTestFile = (
   overrideTestCase = false
 ) => {
   const filePath = Path.join(outputDir, fileName);
-  logger.info(`File path ${filePath}`);
+  logger.info(
+    `File path ${filePath} with overrideTestCase ${overrideTestCase}`
+  );
+  // validate file exists in the output directory.
+  if (fs.existsSync(filePath) && !overrideTestCase) {
+    logger.warn(`Test file ${filePath} already exists.`);
+    return false;
+  }
   // Extract the directory portion from the full path
   const dir = Path.dirname(filePath);
   logger.info(`Directory path ${dir}`);
@@ -40,10 +47,5 @@ export const validateTestFile = (
   // This won't throw an error if the directory already exists
   fs.mkdirSync(dir, { recursive: true });
   logger.info(`Directory exists ${fs.existsSync(dir)}; filePath ${filePath}`);
-  // write file to the output directory with llm content.
-  if (fs.existsSync(filePath) && !overrideTestCase) {
-    logger.warn(`Test file ${filePath} already exists.`);
-    return false;
-  }
   return true;
 };

@@ -17,19 +17,28 @@ Project built on pnpm v10.24.0
 ## Installation
 
 ```bash
-pnpm install
+pnpm install ts-genai-test
 ```
 
-## Build
+or
 
-```bash
-pnpm run build
+```
+npm install ts-genai-test
 ```
 
 ## Usage
 
-```bash
-pnpm run dev
+```Typescript
+import { generateTests, functionalTypes } from "ts-genai-test";
+const inputPrompt: functionalTypes.PromptInput[] = [
+    {
+      outDir: path.resolve(__dirname, "../__tests__/"), // test suite folder for node project
+      folderPath: path.resolve(__dirname, "../src"), // source code folder for node project
+      filePath: path.resolve(__dirname, "../src/index"), // source code file for node project
+      functionName: "add", // function name to generate test case
+      testFileName: "", // optional if needed other format other than folderPath/filePath/functionName.test.ts, specific test file name can be provided
+    },]
+    await generateTests(inputPrompt);
 ```
 
 ## License
