@@ -2,7 +2,8 @@
   "name": "testcase-gen-ai-ts",
   "version": "1.0.0",
   "description": "AI-Powered Jest Test Case Generator for TypeScript (Node.js)",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
@@ -37,5 +38,11 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@google/genai": "^1.34.0",
+    "dotenv": "^17.2.3",
+    "openai": "^6.15.0",
+    "winston": "^3.19.0"
   }
 }
