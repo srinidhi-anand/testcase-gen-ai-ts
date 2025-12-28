@@ -175,6 +175,18 @@ AVOID USING ABSOLUTE PATHS IN IMPORTS.
 
 4. NEVER EVER USE console.log or console.error, Always USE logger to log info or error information.
 
+IMPORTANT:
+- Do NOT attempt to calculate or print final test suite counts.
+- Do NOT hardcode total tests or execution time.
+- Test files MUST rely on the test runner for final aggregation.
+
+At the end of all test cases, ensure the test file is compatible
+with Jest reporters that will print:
+- Total test suites
+- Total tests
+- Pass/fail status
+- Total execution time
+
 ========================
 MANDATORY LOG FIELDS
 ========================

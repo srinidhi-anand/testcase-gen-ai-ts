@@ -20,6 +20,7 @@ export const initAIModel = (
     case "gemini":
       return genAIGeminiService(prompt, modelName);
     case "openai":
+    case "groq":
       return genAIOpenAIService(prompt, modelName);
     default:
       throw new Error(`Unsupported AI model: ${aiModel}`);
