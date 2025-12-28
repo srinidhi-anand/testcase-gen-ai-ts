@@ -4,6 +4,12 @@
   "description": "AI-Powered Jest Test Case Generator for TypeScript (Node.js)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/srinidhi-anand/testcase-gen-ai-ts.git"
@@ -20,22 +26,19 @@
     "prepare": "pnpm build"
   },
   "keywords": [
-    "test case",
     "jest",
+    "test-generator",
     "typescript",
     "ai",
     "llm",
     "openai",
-    "gemini",
-    "jest test case generator",
-    "jest test case generator typescript",
-    "jest test case generator ai",
-    "jest test case generator llm",
-    "jest test case generator openai",
-    "jest test case generator gemini"
+    "gemini"
   ],
-  "author": "srinidhi Anand",
+  "author": "Srinidhi Anand",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "packageManager": "pnpm@10.24.0",
   "devDependencies": {
     "@types/jest": "^30.0.0",
