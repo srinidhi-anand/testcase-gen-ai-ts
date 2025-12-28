@@ -1,13 +1,23 @@
 {
-  "name": "testcase-gen-ai-ts",
-  "version": "0.1.0",
+  "name": "@srinidhi-anand/ts-genai-test",
+  "version": "0.2.0",
   "description": "AI-Powered Jest Test Case Generator for TypeScript (Node.js)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srinidhi-anand/testcase-gen-ai-ts.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "pnpm build"
   },
   "keywords": [
     "test case",
@@ -25,7 +35,7 @@
     "jest test case generator gemini"
   ],
   "author": "srinidhi Anand",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.24.0",
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -36,7 +46,6 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
