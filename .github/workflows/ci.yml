@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - "feature/**"
+  pull_request:
+    branches:
+      - master
+      - "feature/**"
+
+jobs:
+  build-test-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout repository
+      - uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3️⃣ Enable Corepack & pnpm
+      - run: corepack enable
+      - uses: pnpm/action-setup@v4
+
+      # 4️⃣ Install dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # 5️⃣ Run lint (optional)
+      - name: Lint
+        run: pnpm run lint || echo "Lint warnings"
+
+      # 6️⃣ Run tests
+      - name: Run tests
+        run: pnpm test
+
+      # 7️⃣ Generate docs
+      - name: Generate TypeDoc docs
+        run: pnpm exec typedoc --out docs src
+
+      # 8️⃣ Upload docs as artifact
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: typedoc-docs
+          path: docs
