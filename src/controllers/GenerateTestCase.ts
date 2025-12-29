@@ -17,8 +17,29 @@ export const generateTests = async (
   inputPromptDetails: PromptInput[],
   overrideTestCase = false
 ) => {
+  if (!inputPromptDetails || inputPromptDetails.length === 0) {
+    throw new Error("inputPromptDetails array is required");
+  }
+
   for (const inputPrompt of inputPromptDetails) {
     logger.info(`inputPromptDetails : ${JSON.stringify(inputPrompt)}`);
+
+    if (inputPrompt && !inputPrompt.folderPath) {
+      throw new Error("folderPath is required");
+    }
+
+    if (inputPrompt && !inputPrompt.filePath) {
+      throw new Error("filePath is required");
+    }
+
+    if (inputPrompt && !inputPrompt.functionName) {
+      throw new Error("functionName is required");
+    }
+
+    if (inputPrompt && !inputPrompt.outDir) {
+      throw new Error("outDir is required");
+    }
+
     // if no test file name is provided, generate it based on function name
     // else use the provided test file name
     if (!inputPrompt.testFileName) {

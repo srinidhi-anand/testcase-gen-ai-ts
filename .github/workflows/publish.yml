@@ -1,40 +1,37 @@
-name: Publish to npm
+name: Release
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - master
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      id-token: write
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - name: Enable Corepack
-        run: corepack enable
+      - run: corepack enable
+      - uses: pnpm/action-setup@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      # Generate docs before release
+      - name: Generate TypeDoc docs
+        run: pnpm exec typedoc --out docs src
 
-      - name: Build package
-        run: pnpm build
+      # Optional: run tests/lint first
+      - run: pnpm run lint || echo "Lint warnings"
+      - run: pnpm test
 
-      - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks
+      # Semantic release
+      - name: Semantic Release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
