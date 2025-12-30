@@ -36,8 +36,8 @@ export const validateTestFile = (
   );
   // validate file exists in the output directory.
   if (fs.existsSync(filePath) && !overrideTestCase) {
-    logger.warn(`Test file ${filePath} already exists.`);
-    return false;
+    logger.error(`Test file ${filePath} already exists.`);
+    throw new Error(`Test file ${filePath} already exists.`);
   }
   // Extract the directory portion from the full path
   const dir = Path.dirname(filePath);
