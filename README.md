@@ -59,7 +59,7 @@ MIT
 - ✅ AI model selection will be configurable such as groq, openai, gemini, etc.
 - ✅ Function name and file path will be provided as input to the AI model to generate test case.
 
-## **Core Functionality (Middle)**
+## **Core Functionality**
 
 ## Goal: Conceptual Steps - Implement the main logic for generating test cases from user-provided code/functions.
 
