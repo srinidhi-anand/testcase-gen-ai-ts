@@ -1,58 +1,176 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>ts-genai-test</title><meta name="description" content="Documentation for ts-genai-test"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">ts-genai-test</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>ts-genai-test</h1></div><div class="tsd-panel tsd-typography"><h1 id="testcase-gen-ai-ts" class="tsd-anchor-link"><strong>testcase-gen-ai-ts</strong><a href="#testcase-gen-ai-ts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p>📘 AI-Powered Jest Test Case Generator for TypeScript (Node.js)</p>
-<p>A guide to building an AI-powered Test Case Generator for TypeScript (Node.js) backend functions — outputting Jest tests — with support for switching between different LLMs (e.g. Gemini, GPT, etc.), and guidance on which model might fit your use-case best.</p>
-<p>🚀 Features</p>
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>ts-genai-test</title><meta name="description" content="Documentation for ts-genai-test"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">ts-genai-test</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>ts-genai-test</h1></div><div class="tsd-panel tsd-typography"><h1 id="testcase-gen-ai-ts" class="tsd-anchor-link">testcase-gen-ai-ts<a href="#testcase-gen-ai-ts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p>📘 <strong>AI-powered Jest test case generator for TypeScript (Node.js)</strong></p>
+<p><code>testcase-gen-ai-ts</code> is a developer tool that automatically generates Jest unit test cases
+for TypeScript (Node.js) backend functions using Generative AI.</p>
+<p>It is designed to integrate smoothly into modern backend workflows and supports
+multiple LLM providers (Gemini, OpenAI, Groq, etc.) with a reliable retry mechanism
+to handle transient AI failures.</p>
+<p>Built with pnpm and optimized for TypeScript-first projects.</p>
+<hr>
+<h2 id="📦-npm-package" class="tsd-anchor-link">📦 npm Package<a href="#📦-npm-package" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>🔗 <a href="https://www.npmjs.com/package/ts-genai-test"><img src="https://img.shields.io/npm/v/ts-genai-test" alt="npm version"></a></p>
+<hr>
+<h2 id="🧩-github-repository" class="tsd-anchor-link">🧩 GitHub Repository<a href="#🧩-github-repository" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>🔗 <a href="https://github.com/srinidhi-anand/testcase-gen-ai-ts">https://github.com/srinidhi-anand/testcase-gen-ai-ts</a></p>
+<h2 id="🚀-features" class="tsd-anchor-link">🚀 Features<a href="#🚀-features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Generate Jest unit tests automatically from a typescript function</li>
+<li>Works with server-side Node.js + TypeScript projects</li>
+<li>Configurable AI model support (Gemini, Groq, OpenAI GPT, etc.)</li>
+<li>Strict output format (valid <code>.test.ts</code> test files)</li>
+<li>Easy to integrate into existing development workflows</li>
+<li>Creates test folders automatically if missing</li>
+<li>Built with <strong>pnpm</strong> (v10.24.0)</li>
+<li>Built-in <strong>one-time retry mechanism</strong> for GenAI calls if the initial request fails.</li>
+</ul>
+<hr>
+<h2 id="🧰-tech-stack" class="tsd-anchor-link">🧰 Tech Stack<a href="#🧰-tech-stack" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>TypeScript</li>
+<li>Node.js</li>
+<li>pnpm (v10.24.0)</li>
+<li>Jest</li>
+<li>Generative AI (LLM-based test generation)</li>
+</ul>
+<hr>
+<h2 id="📦-installation" class="tsd-anchor-link">📦 Installation<a href="#📦-installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Using <strong>pnpm</strong> (recommended):</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">ts-genai-test</span>
+</code><button type="button">Copy</button></pre>
+
+<p>or using <strong>npm</strong></p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">ts-genai-test</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="🚀-usage" class="tsd-anchor-link">🚀 Usage<a href="#🚀-usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h4 id="basic-example" class="tsd-anchor-link">Basic Example<a href="#basic-example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="Typescript"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-4">path</span><span class="hl-1"> </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;path&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">generateTests</span><span class="hl-1">, </span><span class="hl-4">functionalTypes</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;ts-genai-test&quot;</span><span class="hl-1">;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">inputPrompt</span><span class="hl-1">: </span><span class="hl-7">functionalTypes</span><span class="hl-1">.</span><span class="hl-7">PromptInput</span><span class="hl-1">[] = [</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-4">outputTestDir:</span><span class="hl-1"> </span><span class="hl-4">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-4">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../__tests__&quot;</span><span class="hl-1">), </span><span class="hl-8">// optional test suite directory, defaults to &#39;tests&#39; folder</span><br/><span class="hl-1">    </span><span class="hl-4">folderPath:</span><span class="hl-1"> </span><span class="hl-4">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-4">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../src&quot;</span><span class="hl-1">),  </span><span class="hl-8">// source folder</span><br/><span class="hl-1">    </span><span class="hl-4">filePath:</span><span class="hl-1"> </span><span class="hl-4">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-4">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../src/index&quot;</span><span class="hl-1">), </span><span class="hl-8">// source file</span><br/><span class="hl-1">    </span><span class="hl-4">functionName:</span><span class="hl-1"> </span><span class="hl-2">&quot;add&quot;</span><span class="hl-1">, </span><span class="hl-8">// function to generate tests for</span><br/><span class="hl-1">    </span><span class="hl-4">testFileName:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1"> </span><span class="hl-8">// optional custom test file name</span><br/><span class="hl-1">    </span><span class="hl-4">rootPath</span><span class="hl-1">: </span><span class="hl-2">&quot;&quot;</span><span class="hl-1"> </span><span class="hl-8">// optional if outputTestDir is provided else its mandatory to form tests folder path</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">];</span><br/><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">generateTests</span><span class="hl-1">(</span><span class="hl-4">inputPrompt</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The generated Jest test file will be created automatically inside the
+specified test directory.</p>
+<h2 id="♻️-override-test-case-option" class="tsd-anchor-link">♻️ Override Test Case Option<a href="#♻️-override-test-case-option" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>By default, the tool does NOT overwrite existing test files to prevent accidental data loss.
+You can explicitly allow regeneration of test cases using the override option:</p>
+<pre><code class="Typescript"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">generateTests</span><span class="hl-1">(</span><span class="hl-4">inputPrompt</span><span class="hl-1">, </span><span class="hl-4">overrideTestCases</span><span class="hl-1">= </span><span class="hl-5">true</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="behavior-summary" class="tsd-anchor-link">Behavior Summary<a href="#behavior-summary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test file exists &amp; override = false</td>
+<td>❌ Skips generation</td>
+</tr>
+<tr>
+<td>Test file exists &amp; override = true</td>
+<td>✅ Overwrites test file</td>
+</tr>
+<tr>
+<td>Test file does not exist</td>
+<td>✅ Creates test file</td>
+</tr>
+</tbody>
+</table>
+<p>This makes the tool safe for:</p>
 <ul>
-<li>Given a function name or TypeScript code, generate unit tests in Jest automatically.</li>
-<li>Supports server-side Node.js + TypeScript projects.</li>
-<li>Configurable to use different LLM backends (e.g. Gemini, Groq, OpenAI GPT).</li>
-<li>Easy to integrate in development workflow.</li>
-<li>Strict output format (valid .ts test file), ready to drop into your test suite.</li>
+<li>CI pipelines</li>
+<li>Iterative development</li>
+<li>Controlled regeneration of tests</li>
 </ul>
-<p>Project built on pnpm v10.24.0</p>
-<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">ts-genai-test</span>
-</code><button type="button">Copy</button></pre>
-
-<p>or</p>
-<pre><code><span class="hl-3">npm</span><span class="hl-1"> </span><span class="hl-3">install</span><span class="hl-1"> </span><span class="hl-3">ts</span><span class="hl-1">-</span><span class="hl-3">genai</span><span class="hl-1">-</span><span class="hl-3">test</span>
-</code><button>Copy</button></pre>
-
-<h2 id="usage" class="tsd-anchor-link">Usage<a href="#usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><pre><code class="Typescript"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-3">generateTests</span><span class="hl-1">, </span><span class="hl-3">functionalTypes</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&quot;ts-genai-test&quot;</span><span class="hl-1">;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">inputPrompt</span><span class="hl-1">: </span><span class="hl-7">functionalTypes</span><span class="hl-1">.</span><span class="hl-7">PromptInput</span><span class="hl-1">[] = [</span><br/><span class="hl-1">    {</span><br/><span class="hl-1">      </span><span class="hl-3">outDir:</span><span class="hl-1"> </span><span class="hl-3">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-3">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../__tests__/&quot;</span><span class="hl-1">), </span><span class="hl-8">// test suite folder for node project</span><br/><span class="hl-1">      </span><span class="hl-3">folderPath:</span><span class="hl-1"> </span><span class="hl-3">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-3">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../src&quot;</span><span class="hl-1">), </span><span class="hl-8">// source code folder for node project</span><br/><span class="hl-1">      </span><span class="hl-3">filePath:</span><span class="hl-1"> </span><span class="hl-3">path</span><span class="hl-1">.</span><span class="hl-0">resolve</span><span class="hl-1">(</span><span class="hl-3">__dirname</span><span class="hl-1">, </span><span class="hl-2">&quot;../src/index&quot;</span><span class="hl-1">), </span><span class="hl-8">// source code file for node project</span><br/><span class="hl-1">      </span><span class="hl-3">functionName:</span><span class="hl-1"> </span><span class="hl-2">&quot;add&quot;</span><span class="hl-1">, </span><span class="hl-8">// function name to generate test case</span><br/><span class="hl-1">      </span><span class="hl-3">testFileName:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1">, </span><span class="hl-8">// optional if needed other format other than folderPath/filePath/functionName.test.ts, specific test file name can be provided</span><br/><span class="hl-1">    },]</span><br/><span class="hl-1">    </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">generateTests</span><span class="hl-1">(</span><span class="hl-3">inputPrompt</span><span class="hl-1">);</span>
-</code><button type="button">Copy</button></pre>
-
-<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>MIT</p>
-<h2 id="feature-roadmap" class="tsd-anchor-link">feature roadmap<a href="#feature-roadmap" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>⏳ Read the files in src folder.</li>
-<li>⏳ Generate test case for each function in a file.</li>
-<li>✅ Based on AI model selection, generate test case to a test file under tests suite folder.</li>
-<li>✅ Tests folder will be created in the root directory if not exists already.</li>
-<li>✅ Test file name creation will be based on the input prompt details like function, file path, etc.</li>
-<li>✅ Test case generation will be using jest.</li>
-<li>⏳ Extended support for other test frameworks.</li>
-<li>⏳ Extended support for other files other than typescript.</li>
-<li>⏳ Extended support for API test cases including Functional test cases.</li>
-<li>✅ AI model selection will be configurable such as groq, openai, gemini, etc.</li>
-<li>✅ Function name and file path will be provided as input to the AI model to generate test case.</li>
+<h2 id="🔁-genai-retry-strategy" class="tsd-anchor-link">🔁 GenAI Retry Strategy<a href="#🔁-genai-retry-strategy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>To improve reliability, the system automatically retries once if a GenAI request fails due to:</p>
+<ul>
+<li>network issues</li>
+<li>API rate limits</li>
+<li>transient LLM errors</li>
 </ul>
-<h2 id="core-functionality-middle" class="tsd-anchor-link"><strong>Core Functionality (Middle)</strong><a href="#core-functionality-middle" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h2 id="goal-conceptual-steps-implement-the-main-logic-for-generating-test-cases-from-user-provided-codefunctions" class="tsd-anchor-link">Goal: Conceptual Steps - Implement the main logic for generating test cases from user-provided code/functions.<a href="#goal-conceptual-steps-implement-the-main-logic-for-generating-test-cases-from-user-provided-codefunctions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h2 id="21-input-handling" class="tsd-anchor-link">2.1 Input Handling<a href="#21-input-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>✔️User submits file path, folder path and output path to store test cases.</li>
-<li>✔️Validate input path exists and consists of valid files if its folder path.</li>
-<li>⏳Prints the files count in the folder and number of functions per file.</li>
+<p>If the retry fails, a clear error message is returned</p>
+<p>✔️ Prevents duplicate test creation
+✔️ Improves success rate
+✔️ Keeps execution deterministic</p>
+<h2 id="🧠-core-functionality" class="tsd-anchor-link">🧠 Core Functionality<a href="#🧠-core-functionality" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><h3 id="1-input-handling" class="tsd-anchor-link">1. Input Handling<a href="#1-input-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✔ Accepts file path, folder path, and output path</li>
+<li>✔ Validates input paths and file existence</li>
+<li>⏳ Planned: print number of files and functions detected</li>
 </ul>
-<h2 id="22-ai-test-case-generation" class="tsd-anchor-link">2.2 AI Test Case Generation<a href="#22-ai-test-case-generation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>✔️Create a service to call GenAI API with a prompt.</li>
-<li>✔️Include language, function name, and expected behavior in a promp.</li>
-<li>✔️Receive typescript ready code response as generated test cases (e.g., Jest code for Node.js).</li>
-<li>⏳Optional: allow different testing frameworks (Jest, Mocha, Pytest).</li>
+<h3 id="2-ai-test-case-generation" class="tsd-anchor-link">2. AI Test Case Generation<a href="#2-ai-test-case-generation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✔ Generates prompts using function name</li>
+<li>✔ Calls configured GenAI provider</li>
+<li>✔ Produces TypeScript-ready Jest test code</li>
+<li>⏳ Planned: support additional testing frameworks</li>
 </ul>
-<h2 id="23-formatting-storage" class="tsd-anchor-link">2.3 Formatting &amp; Storage<a href="#23-formatting-storage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>✔️Parse AI response to proper code format.</li>
-<li>✔️Create generated test cases for user reference in the provided output path.</li>
-<li>✔️Print the generated test cases statuses.</li>
-<li>⏳Optional: Return the generated test cases statuses to frontend or API caller.</li>
+<h3 id="3-formatting-storage" class="tsd-anchor-link">3. Formatting &amp; Storage<a href="#3-formatting-storage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✔ Parses AI response into clean TypeScript code</li>
+<li>✔ Automatically creates test directories if missing</li>
+<li>✔ Writes generated test cases to the output path</li>
+<li>✔ Displays generation status</li>
+<li>⏳ Planned: return structured results for API usage</li>
 </ul>
-<h2 id="24-error-handling" class="tsd-anchor-link">2.4 Error Handling<a href="#24-error-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>⏳Invalid code snippet or unsupported language.</li>
-<li>⏳API errors (rate limit, timeout).</li>
-<li>✔️Return / display the clear error messages to the user.</li>
+<h3 id="4-error-handling" class="tsd-anchor-link">4. Error Handling<a href="#4-error-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✔ Clear error messages for invalid input or AI failures</li>
+<li>⏳ Planned: handle unsupported languages and malformed code</li>
+<li>⏳ Planned: handle API rate limits and timeouts</li>
 </ul>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#testcase-gen-ai-ts"><span>testcase-<wbr/>gen-<wbr/>ai-<wbr/>ts</span></a><ul><li><a href="#installation"><span>Installation</span></a></li><li><a href="#usage"><span>Usage</span></a></li><li><a href="#license"><span>License</span></a></li><li><a href="#feature-roadmap"><span>feature roadmap</span></a></li><li><a href="#core-functionality-middle"><span>Core <wbr/>Functionality (<wbr/>Middle)</span></a></li><li><a href="#goal-conceptual-steps-implement-the-main-logic-for-generating-test-cases-from-user-provided-codefunctions"><span>Goal: <wbr/>Conceptual <wbr/>Steps -<wbr/> <wbr/>Implement the main logic for generating test cases from user-<wbr/>provided code/functions.</span></a></li><li><a href="#21-input-handling"><span>2.1 <wbr/>Input <wbr/>Handling</span></a></li><li><a href="#22-ai-test-case-generation"><span>2.2 <wbr/>AI <wbr/>Test <wbr/>Case <wbr/>Generation</span></a></li><li><a href="#23-formatting-storage"><span>2.3 <wbr/>Formatting &amp; <wbr/>Storage</span></a></li><li><a href="#24-error-handling"><span>2.4 <wbr/>Error <wbr/>Handling</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">ts-genai-test</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+<h3 id="🧪-supported-test-frameworks" class="tsd-anchor-link">🧪 Supported Test Frameworks<a href="#🧪-supported-test-frameworks" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jest</td>
+<td>✅ Supported</td>
+</tr>
+<tr>
+<td>Mocha</td>
+<td>⏳ Planned</td>
+</tr>
+<tr>
+<td>Vitest</td>
+<td>⏳ Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="🧠-supported-ai-providers" class="tsd-anchor-link">🧠 Supported AI Providers<a href="#🧠-supported-ai-providers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI GPT</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Groq</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Others</td>
+<td>⏳ Planned</td>
+</tr>
+</tbody>
+</table>
+<h2 id="🛣️-feature-roadmap" class="tsd-anchor-link">🛣️ Feature Roadmap<a href="#🛣️-feature-roadmap" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>⏳ Read and process all files in src folder</li>
+<li>⏳ Generate test cases for every function in a file</li>
+<li>✅ AI-based Jest test generation</li>
+<li>✅ Automatic test folder creation</li>
+<li>✅ Predictable test file naming</li>
+<li>⏳ Support for additional test frameworks</li>
+<li>⏳ Support for non-TypeScript files</li>
+<li>⏳ API and functional test generation</li>
+<li>✅ Configurable AI model selection (Groq, OpenAI, Gemini, etc.)</li>
+<li>✅ Configurable output paths and test file names</li>
+</ul>
+<h2 id="⚠️-limitations" class="tsd-anchor-link">⚠️ Limitations<a href="#⚠️-limitations" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Generated test cases should be reviewed before production use</li>
+<li>Complex business logic may require manual adjustments</li>
+<li>This tool assists developers; it does not replace human-written tests</li>
+</ul>
+<h2 id="📄-license" class="tsd-anchor-link">📄 License<a href="#📄-license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>MIT © Srinidhi Anand</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#testcase-gen-ai-ts"><span>testcase-<wbr/>gen-<wbr/>ai-<wbr/>ts</span></a><ul><li><a href="#📦-npm-package"><span>📦 npm <wbr/>Package</span></a></li><li><a href="#🧩-github-repository"><span>🧩 <wbr/>Git<wbr/>Hub <wbr/>Repository</span></a></li><li><a href="#🚀-features"><span>🚀 <wbr/>Features</span></a></li><li><a href="#🧰-tech-stack"><span>🧰 <wbr/>Tech <wbr/>Stack</span></a></li><li><a href="#📦-installation"><span>📦 <wbr/>Installation</span></a></li><li><a href="#🚀-usage"><span>🚀 <wbr/>Usage</span></a></li><li><ul><li><ul><li><a href="#basic-example"><span>Basic <wbr/>Example</span></a></li></ul></li></ul></li><li><a href="#♻️-override-test-case-option"><span>♻️ <wbr/>Override <wbr/>Test <wbr/>Case <wbr/>Option</span></a></li><li><a href="#behavior-summary"><span>Behavior <wbr/>Summary</span></a></li><li><a href="#🔁-genai-retry-strategy"><span>🔁 <wbr/>Gen<wbr/>AI <wbr/>Retry <wbr/>Strategy</span></a></li><li><a href="#🧠-core-functionality"><span>🧠 <wbr/>Core <wbr/>Functionality</span></a></li><li><ul><li><a href="#1-input-handling"><span>1. <wbr/>Input <wbr/>Handling</span></a></li><li><a href="#2-ai-test-case-generation"><span>2. <wbr/>AI <wbr/>Test <wbr/>Case <wbr/>Generation</span></a></li><li><a href="#3-formatting-storage"><span>3. <wbr/>Formatting &amp; <wbr/>Storage</span></a></li><li><a href="#4-error-handling"><span>4. <wbr/>Error <wbr/>Handling</span></a></li><li><a href="#🧪-supported-test-frameworks"><span>🧪 <wbr/>Supported <wbr/>Test <wbr/>Frameworks</span></a></li><li><a href="#🧠-supported-ai-providers"><span>🧠 <wbr/>Supported <wbr/>AI <wbr/>Providers</span></a></li></ul></li><li><a href="#🛣️-feature-roadmap"><span>🛣️ <wbr/>Feature <wbr/>Roadmap</span></a></li><li><a href="#⚠️-limitations"><span>⚠️ <wbr/>Limitations</span></a></li><li><a href="#📄-license"><span>📄 <wbr/>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">ts-genai-test</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

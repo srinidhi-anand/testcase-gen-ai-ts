@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.0.0...v1.1.0) (2025-12-31)
+
+
+### Features
+
+* test directory input argument name changes ([209b8a6](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/209b8a633f344310bbed004bf850b887be9cd372))
+
 # 1.0.0 (2025-12-29)
 
 
