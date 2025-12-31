@@ -13,7 +13,7 @@ describe("generateTestCases", () => {
           filePath: "test",
           folderPath: "",
           functionName: "test",
-          outDir: "test",
+          outputTestDir: "test",
         },
       ])
     ).rejects.toThrow("folderPath is required");
@@ -25,7 +25,7 @@ describe("generateTestCases", () => {
           filePath: "",
           folderPath: "test",
           functionName: "test",
-          outDir: "test",
+          outputTestDir: "test",
         },
       ])
     ).rejects.toThrow("filePath is required");
@@ -37,21 +37,22 @@ describe("generateTestCases", () => {
           filePath: "test",
           folderPath: "test",
           functionName: "",
-          outDir: "test",
+          outputTestDir: "test",
         },
       ])
     ).rejects.toThrow("functionName is required");
   });
-  it("should throw an error if outDir is not provided", async () => {
+  it("should throw an error if outputTestDir and rootPath is not provided", async () => {
     await expect(
       generateTests([
         {
           filePath: "test",
           folderPath: "test",
           functionName: "test",
-          outDir: "",
+          outputTestDir: "",
+          rootPath: "", // project root path
         },
       ])
-    ).rejects.toThrow("outDir is required");
+    ).rejects.toThrow("rootPath is required as outputTestDir is not provided");
   });
 });

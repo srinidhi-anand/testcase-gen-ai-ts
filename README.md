@@ -69,11 +69,12 @@ import path from "path";
 import { generateTests, functionalTypes } from "ts-genai-test";
 const inputPrompt: functionalTypes.PromptInput[] = [
   {
-    outDir: path.resolve(__dirname, "../__tests__"), // test suite directory
+    outputTestDir: path.resolve(__dirname, "../__tests__"), // optional test suite directory, defaults to 'tests' folder
     folderPath: path.resolve(__dirname, "../src"),  // source folder
     filePath: path.resolve(__dirname, "../src/index"), // source file
     functionName: "add", // function to generate tests for
     testFileName: "" // optional custom test file name
+    rootPath: "" // optional if outputTestDir is provided else its mandatory to form tests folder path
   }
 ];
 
