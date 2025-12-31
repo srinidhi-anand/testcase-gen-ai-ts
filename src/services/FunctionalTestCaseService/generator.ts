@@ -11,7 +11,7 @@ export const buildPrompt = (input: PromptInput): string => {
     input.folderPath,
     input.filePath ?? "",
     input.functionName ?? "",
-    input.outDir ?? "",
+    input.outputTestDir ?? "",
     input.testFileName ?? ""
   );
 };

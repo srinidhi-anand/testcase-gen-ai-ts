@@ -2,7 +2,7 @@ export const promptTemplate = (
   folderPath: string,
   filePath: string,
   functionName: string,
-  outDir: string,
+  outputTestDir: string,
   testFileName: string
 ) => `You are an expert QA Automation Software Engineer and a highly reliable
 automated test case generator.
@@ -19,7 +19,7 @@ INPUT PARAMETERS
 - Folder Path: ${folderPath}
 - File Path: ${filePath}
 - Function Name: ${functionName}
-- Output Folder: ${outDir} 
+- Output Folder: ${outputTestDir} 
 
 ========================
 PRE-VALIDATION RULES
@@ -38,7 +38,7 @@ PRE-VALIDATION RULES
      and file ${filePath} exists within the folder path ${folderPath}.
    - If the function does NOT exist, return a detailed error message.
 
-4. Verify whether the output folder ${outDir} exists.
+4. Verify whether the output folder ${outputTestDir} exists.
    - If the output folder does NOT exist, create it.
    - If the output folder exists, if filePath and functionName are provided, verify it does not contains test ts file ${testFileName}.
    - If the test ts file ${testFileName} exists, verify the test cases for that selected function.
@@ -52,7 +52,7 @@ Scenario 1:
 - Given a valid function name ${functionName} with file path ${filePath}
   and folder path ${folderPath},
 - Read ONLY the specified function.
-- Generate FUNCTIONAL Jest test cases ONLY for that function in the given output folder ${outDir}.
+- Generate FUNCTIONAL Jest test cases ONLY for that function in the given output folder ${outputTestDir}.
 
 Strictly for every scenario listed, consider step 5 in pre-validation rules.
 

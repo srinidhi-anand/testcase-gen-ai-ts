@@ -20,17 +20,17 @@ export const fileNameFramer = (inputPromptDetails: PromptInput): string => {
 
 /**
  * Validate test file
- * @param {string} outputDir Output directory
+ * @param {string} outputTestDir Output directory
  * @param {string} fileName File name
  * @param {boolean} overrideTestCase Override test case
  * @returns {boolean} True if the test file is valid, otherwise false if exists.
  */
 export const validateTestFile = (
-  outputDir: string,
+  outputTestDir: string,
   fileName: string,
   overrideTestCase = false
 ) => {
-  const filePath = Path.join(outputDir, fileName);
+  const filePath = Path.join(outputTestDir, fileName);
   logger.info(
     `File path ${filePath} with overrideTestCase ${overrideTestCase}`
   );

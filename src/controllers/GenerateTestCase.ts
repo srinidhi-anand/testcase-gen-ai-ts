@@ -1,3 +1,4 @@
+import path from "path";
 import { writeTestFiles } from "../services/FileWriterService";
 import { buildPrompt } from "../services/FunctionalTestCaseService/generator";
 import {
@@ -36,8 +37,20 @@ export const generateTests = async (
       throw new Error("functionName is required");
     }
 
-    if (inputPrompt && !inputPrompt.outDir) {
-      throw new Error("outDir is required");
+    if (inputPrompt && !inputPrompt.outputTestDir) {
+      logger.warn(
+        "outputTestDir is not provided, hence using default value 'tests' folder"
+      );
+      if (inputPrompt && !inputPrompt.rootPath) {
+        // checks for the project root path information.
+        throw new Error(
+          "rootPath is required as outputTestDir is not provided"
+        );
+      }
+      inputPrompt.outputTestDir = path.resolve(
+        inputPrompt.rootPath as string,
+        "tests"
+      );
     }
 
     // if no test file name is provided, generate it based on function name
@@ -47,7 +60,7 @@ export const generateTests = async (
     }
     // validate test file if it exists else create it
     const validateTestFlow = validateTestFile(
-      inputPrompt.outDir,
+      inputPrompt.outputTestDir as string,
       inputPrompt.testFileName,
       overrideTestCase
     );
@@ -61,7 +74,7 @@ export const generateTests = async (
     const aiResponse = await initAIModel(config.model, prompt);
     logger.info(`AI response generated.`);
     const result = writeTestFiles(
-      inputPrompt.outDir,
+      inputPrompt.outputTestDir as string,
       inputPrompt.testFileName,
       aiResponse
     );
