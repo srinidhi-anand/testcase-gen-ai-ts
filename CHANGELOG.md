@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.2.2...v2.0.0) (2026-04-16)
+
+
+### Features
+
+* release version 2.0.0 ([8ead3c2](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/8ead3c255bd5e55ee86a3dc89bf45f6e8661a177))
+
+
+### BREAKING CHANGES
+
+* This commit forces the major version upgrade to v2.0.0 to reflect the grouping and architecture overhaul.
+
 ## [1.2.2](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.2.1...v1.2.2) (2026-04-16)
 
 
