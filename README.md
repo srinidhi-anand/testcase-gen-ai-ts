@@ -1,13 +1,12 @@
-# testcase-gen-ai-ts
+# ts-genai-test (v2.0.0)
 
-📘 **AI-powered Jest test case generator for TypeScript (Node.js)**
+🚀 **The Intelligent, Complexity-Aware Jest Test Generator for TypeScript**
 
-`testcase-gen-ai-ts` is a developer tool that automatically generates Jest unit test cases
-for TypeScript (Node.js) backend functions using Generative AI.
+`ts-genai-test` is a high-performance developer tool that uses **AST-based code analysis** to automatically generate optimized Jest unit tests. It doesn't just call an AI; it calculates code complexity to route your requests to the most efficient LLM provider (Gemini, OpenAI, or Groq), saving you costs while maximizing test accuracy.
 
-It is designed to integrate smoothly into modern backend workflows and supports
-multiple LLM providers (Gemini, OpenAI, Groq, etc.) with a reliable retry mechanism
-to handle transient AI failures.
+---
+
+🔗 **[View the Technical Walkthrough](./walkthrough_v2.md)** (Architecture, CLI Demo & Deep Dive)
 
 Built with pnpm and optimized for TypeScript-first projects.
 
@@ -86,7 +85,10 @@ AI_OVERRIDE_POLICY=auto # auto | suggest | never
 
 ## 🚀 Usage
 
-#### Basic Example
+#### Basic Example (Deprecated)
+
+> [!CAUTION]
+> **Programmatic usage (Basic Example) is now deprecated.** To improve your workflow efficiency, we strongly recommend using the **CLI interface** instead of manually framing `inputPrompt` arrays and calling `generateTests` programs. Support for this manual execution pattern may be removed in future major versions.
 
 ```Typescript
 import path from "path";
@@ -131,14 +133,45 @@ The system calculates a **Complexity Score** based on Lines of Code (LOC), Branc
 - `--root <path>`: Manually set the project root for complex monorepo structures.
 - `--staged`: Explicitly trigger staged detection (active by default for `generate`).
 
+#### 💡 CLI Usage Examples
+
+**1. Generate tests for Git staged files (Automated):**
+
+```bash
+npx ts-genai-test generate
+```
+
+**2. Manually generate tests for a specific folder:**
+
+```bash
+npx ts-genai-test run --path src/services/userAuth
+```
+
+**3. Target only one specific function in a file:**
+
+```bash
+npx ts-genai-test run --path src/utils/helper.ts --function computeComplexity
+```
+
+**4. Force regeneration of existing tests:**
+
+```bash
+npx ts-genai-test run --path src/components --override
+```
+
+---
+
 ## ♻️ Override Test Case Option
 
 By default, the tool does NOT overwrite existing test files to prevent accidental data loss.
 You can explicitly allow regeneration of test cases using the override option:
 
 ```Typescript
-await generateTests(inputPrompt, overrideTestCases= true);
+await generateTests(inputPrompt, { override: true });
 ```
+
+> [!IMPORTANT]
+> **API Migration Notice:** The second argument of `generateTests` has been upgraded from a simple `boolean` to an `ExecutionContext` object to support advanced metadata. While we currently maintain backward compatibility for boolean inputs, this will be removed in future major versions. We highly recommend migrating your scripts to use the object syntax or switching to the new CLI commands.
 
 ## Behavior Summary
 
@@ -178,32 +211,32 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 
 ## 🧠 Core Functionality
 
-### 1. Input Handling
+### 1. Advanced Input & Complexity Analysis
 
-- ✔ Accepts file path, folder path, and output path
-- ✔ Validates input paths and file existence
-- ⏳ Planned: print number of files and functions detected
+- ✔ **Recursive Directory Scanning**: Resolves all `.ts` files within a target path automatically.
+- ✔ **AST Analysis**: Parses code to compute complexity scores based on LOC, branching, and async usage.
+- ✔ **Intelligent Routing**: Dynamically selects between Gemini, OpenAI, and Groq based on complexity vs. cost.
+- ✔ **Function Isolation**: Specifically target one function using the `--function` flag.
 
 ### 2. AI Test Case Generation
 
-- ✔ Generates prompts using function name
-- ✔ Calls configured GenAI provider
-- ✔ Produces TypeScript-ready Jest test code
-- ⏳ Planned: support additional testing frameworks
+- ✔ **Exhaustive Prompting**: Generates sophisticated prompts providing full implementation context.
+- ✔ **Context-Aware Imports**: Detects export styles (default vs. named) to write correct test file imports.
+- ✔ **Jest-Strict Output**: Produces ready-to-run `.test.ts` files using modern Jest matchers.
+- 🔁 **Resilient Execution**: Multi-retry logic to handle provider downtime or rate limits.
 
-### 3. Formatting & Storage
+### 3. Performance & Metrics
 
-- ✔ Parses AI response into clean TypeScript code
-- ✔ Automatically creates test directories if missing
-- ✔ Writes generated test cases to the output path
-- ✔ Displays generation status
-- ⏳ Planned: return structured results for API usage
+- ✔ **Batched Persistence**: Aggregates all test summaries into a single secure I/O write.
+- ✔ **Token Tracking**: Full audit of input and output tokens for cost calculation.
+- ✔ **Coverage Mapping**: Extracts Jest coverage data automatically to map test success rates.
+- ✔ **Local History**: Persists the last 50 runs for offline auditing and performance review.
 
-### 4. Error Handling
+### 4. Resilient Error Handling
 
-- ✔ Clear error messages for invalid input or AI failures
-- ⏳ Planned: handle unsupported languages and malformed code
-- ⏳ Planned: handle API rate limits and timeouts
+- ✔ **Early-Exit Guards**: Validates environment and API tokens before initiating expensive AI calls.
+- ✔ **Graceful Deprecation**: Supports legacy setups with clear upgrade paths in the terminal.
+- ✔ **State Isolation**: Prevents retry logic from polluting concurrent file generations.
 
 ### 🧪 Supported Test Frameworks
 
@@ -238,9 +271,11 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 
 ## ⚠️ Limitations
 
-- Generated test cases should be reviewed before production use
-- Complex business logic may require manual adjustments
-- This tool assists developers; it does not replace human-written tests
+- **Human Review Required**: AI-generated tests should always be reviewed by a developer to ensure logical intent matches the business requirement.
+- **Single-File Context**: Currently, the AST analyzer only sees the code within the target file. It does not resolve logic from external imported files.
+- **TypeScript Only**: Support is currently limited to `.ts` files. JavaScript (`.js`) and other languages are on the roadmap.
+- **Provider Rate Limits**: The tool is subject to the rate limits of your configured LLM provider (OpenAI, Gemini, etc.).
+- **Complex Edge Cases**: Highly abstract or complex generic patterns in TypeScript may require manual test adjustments.
 
 ## 🤝 Acknowledgements
 
