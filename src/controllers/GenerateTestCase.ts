@@ -4,7 +4,7 @@ import {
   getImportPath,
   validateTestFile,
 } from "../services/outputService/FileNameFramerService";
-import type { ExecutionContext, PromptInput } from "../types/functionalPromptType";
+import type { ExecutionContext, JestSummary, PromptInput } from "../types/functionalPromptType";
 import logger from "../config/logger";
 import { initAIModel } from "../services/modelService/index";
 import { MetricsRunner } from "../services/metrics/metricsRunner";
@@ -15,6 +15,7 @@ import { computeComplexity, aiModelDecider } from "../services/FunctionalTestCas
 import * as fs from "fs";
 import { config } from "../config/config";
 import { models } from "../services/metrics/pricingConfig";
+import { extractFunctions } from "./dataController";
 
 /**
  * Generate test cases
@@ -26,9 +27,11 @@ export const generateTests = async (
 ) => {
   // override always defaults to false, supports both legacy boolean arg and new ctx object metadata!
   let overrideTestCase = false;
+  let legacy = false;
   if (typeof ctx === 'boolean') {
     logger.warn("DEPRECATION [ts-genai-test]: Passing an override state as boolean to 'generateTests' is deprecated. Please pass an object instead, e.g., { override: true }. Support for boolean arguments will be removed in future versions.");
     overrideTestCase = ctx;
+    legacy = true;
   } else if (ctx && typeof ctx === 'object') {
     overrideTestCase = !!ctx.override;
   }
@@ -47,107 +50,143 @@ export const generateTests = async (
     throw new Error(`${config.model.name ? 'LLM' : 'MODEL'} is missing! Please configure ${config.model.name ? 'LLM' : 'MODEL'} in your .env file before running ts-genai-test.`);
   }
 
-  logger.info(`generateTests: generating test for ${inputDetails.length} file(s).`)
+  logger.info(`generateTests: analyzing ${inputDetails.length} target function(s).`)
   logger.info(`generateTests: generating test override enabled ? ${!!overrideTestCase}`)
 
-  const testFilePaths = [];
-  const summariesBatch = [];
+  // 1. Validation
+  for (const inputPrompt of inputDetails) {
+    if (!inputPrompt.folderPath) throw new Error("folderPath is required");
+    if (!inputPrompt.filePath) throw new Error("filePath is required");
+    if (!inputPrompt.functionName) throw new Error("functionName is required");
+  }
 
-  const metricsService = new MetricsRunner();
+  const testFilePaths: string[] = [];
+  const summariesBatch: JestSummary[] = [];
+  const CONCURRENCY_LIMIT = 3;
 
-  for (let inputPrompt of inputDetails) {
-    logger.info(`inputPromptDetails : ${JSON.stringify(inputPrompt)}`);
-
-    if (inputPrompt && !inputPrompt.folderPath) {
-      throw new Error("folderPath is required");
+  // 2. Group inputs by filePath to minimize AI requests
+  const fileGroups = new Map<string, PromptInput[]>();
+  for (const input of inputDetails) {
+    const key = input.filePath;
+    if (!fileGroups.has(key)) {
+      fileGroups.set(key, []);
     }
+    fileGroups.get(key)!.push(input);
+  }
 
-    if (inputPrompt && !inputPrompt.filePath) {
-      throw new Error("filePath is required");
+  logger.info(`Grouping complete: Consolidated into ${fileGroups.size} AI unit(s) (one per unique file).`);
+
+  // 3. Process each file group as a single AI task
+  const processFileGroup = async (filePath: string, inputs: PromptInput[]) => {
+    const metricsService = new MetricsRunner();
+    // Use the first input as the base for shared metadata
+    const baseInput: PromptInput = { ...inputs[0] } as PromptInput;
+    let defaultExports = inputs.reduce((acc, item) => {
+      acc[item.functionName] = !!item.isDefaultExport;
+      return acc;
+    }, {} as Record<string, boolean>)
+    if (legacy) {
+      // Robustly resolve filePath with proper extension (.ts or .tsx)
+      let resolvedPath = path.resolve(baseInput.rootPath || process.cwd(), baseInput.filePath);
+
+      // checks if filePath is missing extension, if so, resolve with proper extension.
+      if (!fs.existsSync(resolvedPath)) {
+        if (fs.existsSync(`${resolvedPath}.ts`)) {
+          resolvedPath = `${resolvedPath}.ts`;
+        }
+      }
+
+      baseInput.filePath = resolvedPath;
+      const basefunctions = extractFunctions(baseInput.filePath);
+      defaultExports = basefunctions.reduce((acc, item) => {
+        acc[item.name] = !!item.isDefaultExport;
+        return acc;
+      }, defaultExports as Record<string, boolean>)
     }
+    const functionNames = inputs.map(i => i.functionName);
 
-    if (inputPrompt && !inputPrompt.functionName) {
-      throw new Error("functionName is required");
-    }
+    // Convert to multi-function input
+    baseInput.functions = functionNames;
+    baseInput.exportMapping = defaultExports as Record<string, boolean>;
 
-    if (inputPrompt && !inputPrompt.outputTestDir) {
-      logger.warn(
-        "outputTestDir is not provided, hence using default value 'tests' folder"
-      );
-      inputPrompt.outputTestDir = path.resolve(
-        inputPrompt.rootPath as string,
-        "tests"
-      );
-    }
+    logger.info(`Processing group: ${filePath} [Functions: ${functionNames.join(', ')}]`);
 
-    if (inputPrompt && !inputPrompt.rootPath) {
-      // checks for the project root path information.
-      logger.warn(
-        "rootPath is missing and hence resolving to end user project root path"
-      );
-      inputPrompt.rootPath = process.cwd();
-    }
-
-    // if no test file name is provided, generate it based on function name
-    // else use the provided test file name
-    if (!inputPrompt.testFileName) {
-      inputPrompt.testFileName = fileNameFramer(inputPrompt);
-    }
-
-    inputPrompt = getImportPath(inputPrompt);
-    const { testFileName = '', rootPath = '', functionName, outputTestDir, } = inputPrompt;
-
-    // validate test file if it exists else create it
-    const validateTestFlow = validateTestFile(
-      outputTestDir as string,
-      testFileName,
-      overrideTestCase
-    );
-    if (!validateTestFlow) {
-      logger.info(`Test file ${testFileName} already exists.`);
-      continue;
-    }
-    logger.info(`Creating prompt for test file ${testFileName}`);
-    const prompt = buildPrompt(inputPrompt);
-    logger.info(`Prompt generated`);
-
-    let sourceCode = prompt;
     try {
-      const actualPath = inputPrompt.filePath.endsWith('.ts') ? inputPrompt.filePath : `${inputPrompt.filePath}.ts`;
+      // Default path resolutions
+      if (!baseInput.outputTestDir) {
+        baseInput.outputTestDir = path.resolve(baseInput.rootPath || process.cwd(), "tests");
+      }
+      if (!baseInput.rootPath) {
+        baseInput.rootPath = process.cwd();
+      }
+
+      // Prepare file naming and imports for the group
+      if (!baseInput.testFileName) {
+        baseInput.testFileName = fileNameFramer(baseInput);
+      }
+      const aggregatedInput = getImportPath(baseInput);
+
+      const { testFileName = '', rootPath = '', outputTestDir } = aggregatedInput;
+
+      // 3. Guard: Validate if test already exists
+      const canProceed = validateTestFile(outputTestDir as string, testFileName, overrideTestCase);
+      if (!canProceed) return;
+
+      // 4. Complexity Analysis (Analyze full file once)
+      const prompt = buildPrompt(aggregatedInput);
+      let sourceCode = prompt;
+      const actualPath = filePath.endsWith('.ts') ? filePath : `${filePath}.ts`;
+
       if (fs.existsSync(actualPath)) {
         sourceCode = fs.readFileSync(actualPath, "utf-8");
       }
-    } catch (e) { }
 
-    const complexityOutput = computeComplexity(sourceCode);
-    const aiDecision = aiModelDecider(complexityOutput.complexityScore);
+      const complexityOutput = computeComplexity(sourceCode);
+      const aiDecision = aiModelDecider(complexityOutput.complexityScore);
 
-    if (aiDecision.suggestionFlag) {
-      logger.info(aiDecision.suggestionFlag);
+      // 5. AI Generation for the entire group
+      metricsService.model = aiDecision.resolvedModel as models;
+      metricsService.inputDetails = aggregatedInput;
+
+      logger.info(`Requesting batch test generation for: ${functionNames.join(', ')} using [${aiDecision.resolvedModel}]`);
+      const aiResponse = await initAIModel(
+        aiDecision.llmProvider,
+        prompt,
+        aiDecision.resolvedModel,
+        metricsService
+      );
+
+      // 6. Write the unified test file
+      const resultPath = writeTestFiles(outputTestDir as string, testFileName, aiResponse);
+
+      if (resultPath) {
+        testFilePaths.push(resultPath);
+        // 7. Metrics Analysis (Run Jest once for the group)
+        const summary = await metricsService.runJestForFile(rootPath, functionNames.join(', '));
+        summariesBatch.push(summary);
+      }
+    } catch (error) {
+      logger.error(`Failed to process file group ${filePath}:`, error);
     }
+  };
 
-    // dynamically override the metrics tracked model for precise token pricing!
-    metricsService.model = aiDecision.resolvedModel as models;
-    metricsService.inputDetails = inputPrompt;
+  // 4. Concurrency-limited execution using a shared iterator for O(1) efficiency
+  const iterator = fileGroups.entries();
+  const workerCount = Math.min(CONCURRENCY_LIMIT, fileGroups.size);
 
-    const aiResponse = await initAIModel(aiDecision.llmProvider, prompt, aiDecision.resolvedModel, metricsService);
-    logger.info(`AI response generated from computed model provider: ${aiDecision.resolvedModel}`);
-    const resultPath = writeTestFiles(
-      outputTestDir as string,
-      testFileName,
-      aiResponse
-    );
-    if (resultPath) {
-      logger.info("Test files written successfully.");
-      testFilePaths.push(resultPath); // result holds the test file path.
-      const summary = await metricsService.runJestForFile(rootPath, functionName);
-      summariesBatch.push(summary);
-    }
-  }
+  const workers = Array(workerCount)
+    .fill(iterator)
+    .map(async (iter) => {
+      for (const [pathKey, group] of iter) {
+        await processFileGroup(pathKey, group);
+      }
+    });
 
-  // After loop cleanly aggregates, sync everything mapping cleanly 1 single time securely.
+  await Promise.all(workers);
+
+  // Final summary aggregation
   if (summariesBatch.length > 0) {
     saveRunSummary(inputDetails[0]?.rootPath as string || process.cwd(), summariesBatch);
-    logger.info(`Test files summarized securely tracking latest execution cases!`);
+    logger.info(`Optimization complete. Processed ${fileGroups.size} files and ${inputDetails.length} functions.`);
   }
 };

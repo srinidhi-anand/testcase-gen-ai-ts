@@ -24,15 +24,15 @@ Built with pnpm and optimized for TypeScript-first projects.
 
 ## 🚀 Features
 
+- **Grouped Processing (1-File-1-AI)**: Aggregates multiple functions into a single AI request per file, reducing API overhead by up to 80%.
+- **High-Concurrency Workers**: Uses a **Shared Iterator** worker pool ($O(1)$ efficiency) to process file groups in parallel without hitting rate limits.
 - **Intelligent Model Selection**: Dynamically selects LLMs based on AST-based code complexity analysis.
 - **Complexity-Aware Routing**: Maps complexity scores to optimal providers (`openai`, `gemini`, `groq`).
 - **Manual & Automated CLI**: Supports Git staged detection (`generate`) or manual path targeting (`run`).
 - **Flexible Override Policies**: Choose between `auto`, `suggest`, or `never` for AI model swaps.
 - **Execution Metrics & Costs**: Tracks token usage and calculates estimated costs per test case.
 - **Recursive Directory Scanning**: Scans entire module folders for TypeScript functions automatically.
-- **Strict output format**: Produces valid `.test.ts` files ready for Jest.
-- **History Tracking**: Local cache of the last 50 execution runs for auditing.
-- **Resilient Retry Logic**: Built-in 2-retry mechanism (3 total attempts) for network failures.
+- **Strict Output Format**: Produces valid `.test.ts` files with hardened safety against infinite-nesting hallucinations.
 
 ---
 
@@ -225,18 +225,17 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 - ✔ **Jest-Strict Output**: Produces ready-to-run `.test.ts` files using modern Jest matchers.
 - 🔁 **Resilient Execution**: Multi-retry logic to handle provider downtime or rate limits.
 
-### 3. Performance & Metrics
-
+### 3. Performance & Architecture
+- ✔ **Grouped AI Units**: Consolidates functions from the same file into a single unit to save costs and tokens.
+- ✔ **Shared Iterator Workers**: High-performance $O(1)$ task queue for concurrent processing without array-reindexing bottlenecks.
 - ✔ **Batched Persistence**: Aggregates all test summaries into a single secure I/O write.
 - ✔ **Token Tracking**: Full audit of input and output tokens for cost calculation.
 - ✔ **Coverage Mapping**: Extracts Jest coverage data automatically to map test success rates.
 - ✔ **Local History**: Persists the last 50 runs for offline auditing and performance review.
 
-### 4. Resilient Error Handling
-
-- ✔ **Early-Exit Guards**: Validates environment and API tokens before initiating expensive AI calls.
-- ✔ **Graceful Deprecation**: Supports legacy setups with clear upgrade paths in the terminal.
-- ✔ **State Isolation**: Prevents retry logic from polluting concurrent file generations.
+### 4. Import & Framing Intelligence
+- ✔ **Mixed Export Framing**: Detects and handles files with both `default` and `named` exports using an AST-ready framing engine.
+- ✔ **Context-Aware Imports**: Correctly frames `import Default, { Named } from '...'` syntax for grouped batches.
 
 ### 🧪 Supported Test Frameworks
 

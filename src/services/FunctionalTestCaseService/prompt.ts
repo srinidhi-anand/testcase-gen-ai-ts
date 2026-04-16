@@ -1,7 +1,7 @@
 export const promptTemplate = (
    folderPath: string,
    filePath: string,
-   functionName: string,
+   functionNames: string[],
    outputTestDir: string,
    testFileName: string,
    moduleSyntax: string,
@@ -19,7 +19,7 @@ INPUT PARAMETERS
 ========================
 - Folder Path: ${folderPath}
 - File Path: ${filePath}
-- Function Name: ${functionName}
+- Target Functions: [${functionNames.join(", ")}]
 - Output Folder: ${outputTestDir} 
 
 ========================
@@ -34,28 +34,23 @@ PRE-VALIDATION RULES
    - If the file does NOT exist inside ${folderPath}, return a detailed error message.
    - Ensure file extension is ts (only ts files are allowed).
 
-3. If a function name ${functionName} is provided:
-   - Verify whether the function exists in file ${filePath}
-     and file ${filePath} exists within the folder path ${folderPath}.
-   - If the function does NOT exist, return a detailed error message.
+3. For EACH function in [${functionNames.join(", ")}]:
+   - Verify whether the function exists in file ${filePath}.
+   - If a function does NOT exist, stop and return a detailed error message for that function.
 
 4. Verify whether the output folder ${outputTestDir} exists.
    - If the output folder does NOT exist, create it.
-   - If the output folder exists, if filePath and functionName are provided, verify it does not contains test ts file ${testFileName}.
-   - If the test ts file ${testFileName} exists, verify the test cases for that selected function.
-   - If that file contains all necessary test cases for that function, do not overwrite it and skip that function, else append the missing test cases for that function in the same test file without altering existing code.
+   - For every function in the list, verify whether the test suite ${testFileName} needs updates.
 
 ========================
 SCENARIO HANDLING
 ========================
 
-Scenario 1:
-- Given a valid function name ${functionName} with file path ${filePath}
-  and folder path ${folderPath},
-- Read ONLY the specified function.
-- Generate FUNCTIONAL Jest test cases ONLY for that function in the given output folder ${outputTestDir}.
-
-Strictly for every scenario listed, consider step 5 in pre-validation rules.
+Scenario: Grouped Generation
+- Given the valid functions [${functionNames.join(", ")}] within ${filePath},
+- Generate exhaustive FUNCTIONAL Jest test cases for ALL of them.
+- Combine all tests into a SINGLE high-quality TypeScript test file.
+- Use separate 'describe' blocks for EACH target function.
 
 ========================
 FUNCTIONAL TESTING SCOPE (MANDATORY)
@@ -77,10 +72,10 @@ Test cases MUST focus on:
 ========================
 SCRIPT & TEST DOC STRINGS (MANDATORY)
 ========================
-1. Each generated test file MUST include a top-level script doc string
+1. The generated test file MUST include a top-level script doc string
    describing:
    - Purpose of the test file
-   - Target function(s)
+   - Target functions (ALL: ${functionNames.join(", ")})
    - Functional areas covered along with folder and file path it is based on
    - High-level scenarios validated
 
@@ -99,20 +94,15 @@ SCRIPT & TEST DOC STRINGS (MANDATORY)
 ========================
 IMPORT RULES (MANDATORY)
 ========================
-
-As an expert TypeScript and Node.js test automation engineer, before writing any import statement, you MUST READ the source code of the target file ${filePath} and determine how the function ${functionName} is exported in that file ${filePath}.
+As an expert TypeScript and Node.js test automation engineer, before writing any import statement, you MUST READ the source code of the target file ${filePath} and determine how the functions are exported.
 
 STRICT RULES:
-
-FOLLOW THE EXACT SYNTAX 
-
+FOLLOW THE EXACT SYNTAX oF IMPORTS FOR THE GROUP:
 ${moduleSyntax}
 Do not change it IF USER HAS PROVIDED. 
 
 VALIDATION STEP (DO NOT SKIP):
-- Ensure the EXACT USAGE of import syntax of ${moduleSyntax} is followed AS IS.
-
-If an incorrect import style is used, then the test cases file might not work as expected.
+- Ensure the EXACT USAGE of import syntax ${moduleSyntax} is followed AS IS.
 
 ========================
 TIMING & ETA RULES (MANDATORY)
@@ -141,13 +131,14 @@ with Jest reporters that will print:
 TEST CASE GENERATION RULES
 ========================
 - Use Jest framework ONLY.
-- Generate TypeScript test files (.test.ts).
-- Include:
+- Generate one cohesive TypeScript test file (.test.ts).
+- For EACH function in [${functionNames.join(", ")}]:
   1. Positive functional test cases
   2. Negative functional test cases
-  3. Edge cases related only to business logic of the function.
-  4. Boundary conditions related only to input validation of the function.
+  3. Edge cases relative to function business logic.
+  4. Boundary conditions and input validation.
   5. Functional error-handling scenarios
+- You MUST generate at least 12 distinct test cases PER function.
 - Mock external dependencies ONLY to isolate functional logic.
 - USE strictly Jest-compatible TypeScript syntax.
 - NEVER use 'toThrowError()', ALWAYS use 'toThrow()', and ensure all matchers exist in @types/jest.
@@ -158,21 +149,22 @@ TEST CASE GENERATION RULES
 - DO NOT INCLUDE ANY TYPESCRIPT ERRORS IN TEST FILES LIKE TYPEERROR AND FOLLOW ESLINT RULES ALWAYS.
 - ALWAYS ENSURE PROPER TYPES ARE FOLLOWED FOR EVERY VARIABLE AND AT ALL APPLICABLE PLACES INSIDE TEST FILES.
 - Infer types from usage of variables ALWAYS.
-- All logical paths must be tested.
+- ALL logical paths for EACH function must be tested.
 - Follow Jest best practices:
-  - describe / it blocks
+  - describe / it blocks FOR EACH FUNCTION
   - beforeAll / afterAll hooks where appropriate
-- Tests must be deterministic and independent.
-- Ensure test cases strictly evaluates the functional logic of the function.
+- All the Tests must be deterministic and independent.
+- Ensure test cases strictly evaluates the functional logic of EACH function.
 - Ensure very variable is properly declared and initialized with proper type STRICTLY.
-- You MUST generate at least 12 distinct test cases.
+- ENSURE PROPER TYPES OF VARIABLES, ARGUMENTS ARE INFERRED FROM USAGE.
+- You MUST generate at least 12 DISTINCT test cases PER FUNCTION.
 - Each test case must validate a UNIQUE input category.
-- Do NOT omit edge cases.
-- Do NOT omit boundary conditions.
-- Do NOT omit error scenarios.
+- Do NOT OMIT edge cases.
+- Do NOT OMIT boundary conditions.
+- Do NOT OMIT error scenarios.
 
 ========================
-OUTPUT FORMAT (MANDATORY)
+CONSTRAINTS & SAFETY (STRICT)
 ========================
 - Return a raw TypeScript code ONLY.
 - Output must be directly writable to a .test.ts file.
@@ -182,13 +174,22 @@ OUTPUT FORMAT (MANDATORY)
   - Includes script-level and test-level doc strings
   - Measures execution time
 
+1. **NO ABSURD COMPLEXITY**: Do NOT generate nested objects deeper than 3 levels.
+2. **NO REPETITION**: Do NOT create nearly identical test cases with slightly different values.
+3. **SYNTAX INTEGRITY**: Ensure ALL comments (/* */) and code blocks ({ }) are properly CLOSED.
+4. **READABILITY**: Generated tests MUST be clean and maintainable by human developers.
+
 ========================
-STRICT RULES
+OUTPUT FORMAT & RULES
 ========================
 - Do NOT include explanations outside code.
 - Do NOT include markdown formatting in the output.
 - Do NOT hallucinate functions, files, or imports.
-- If validation fails, return ONLY the error object with a clear message.
+- Return ONLY valid raw TypeScript code.
+- DO NOT wrap output in backticks or markdown.
+- DO NOT include explanations, comments outside code, or JSON.
+- Output MUST be directly writable to a .test.ts file.
+- If validation fails, return ONLY clear error message as a comment.
 
 FINAL RESPONSE CONSTRAINT:
 Return ONLY a valid raw TypeScript code.
@@ -196,6 +197,7 @@ Do NOT wrap the response in markdown.
 Do NOT wrap the response in backticks.
 Do NOT include explanations or comments outside code.
 Do NOT include any additional text.
+Return ONLY the runnable TypeScript code. No extra text.
 
 ========================
 CRITICAL OUTPUT RULES:

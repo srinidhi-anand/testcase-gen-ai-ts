@@ -10,7 +10,7 @@ export const buildPrompt = (input: PromptInput): string => {
   return promptTemplate(
     input.folderPath,
     input.filePath ?? "",
-    input.functionName ?? "",
+    input.functions ?? [],
     input.outputTestDir ?? "",
     input.testFileName ?? "",
     input?.moduleSyntax ?? "",

@@ -2,11 +2,13 @@
 export interface PromptInput {
   folderPath: string;
   filePath: string;
+  functions?: string[];
   functionName: string;
   outputTestDir?: string;
   testFileName?: string;
   rootPath?: string;
   isDefaultExport?: boolean;
+  exportMapping?: Record<string, boolean> // Mapping of function name -> isDefault
   importPath?: string;
   moduleSyntax?: string;
 }
