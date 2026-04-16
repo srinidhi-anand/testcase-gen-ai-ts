@@ -110,36 +110,7 @@ ${moduleSyntax}
 Do not change it IF USER HAS PROVIDED. 
 
 VALIDATION STEP (DO NOT SKIP):
-- Ensure the import syntax of ${moduleSyntax} is followed AS IS.
-
-SKIP THE BELOW STEPS 1 TO 9 IF ${moduleSyntax} IS PROVIDED.
-
-1. If the source ${filePath} uses 'export default', you MUST use a default import:
-     → import foo from './foo';
-
-2. If the source ${filePath} uses 'export const foo = ...' or 'export function foo() {}' or export { foo }, you MUST use a named import:
-     → import { foo } from './foo';
-
-3. If the source ${filePath} uses 'module.exports = foo', you MUST use:
-     → const foo = require('./foo');
-
-4. If the source ${filePath} uses 'exports.foo = ...', you MUST use:
-     → const { foo } = require('./foo');
-
-5. You are FORBIDDEN from guessing or assuming the import style.
-   If the export style cannot be determined from the source ${filePath},
-   you MUST add an explicit message near the imports of generated code to notify the developer that import needs to be verified as a comment.
-
-6. You MUST NOT mix default and named imports incorrectly.
-
-7. MUST ensure the necessary imports with ONLY relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
-
-8. VALIDATION STEP (DO NOT SKIP):
-   - Identify the export statement
-   - Decide the import syntax
-   - Only then write the test file
-9. MUST ensure the necessary imports with ONLY provided relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
-
+- Ensure the EXACT USAGE of import syntax of ${moduleSyntax} is followed AS IS.
 
 If an incorrect import style is used, then the test cases file might not work as expected.
 

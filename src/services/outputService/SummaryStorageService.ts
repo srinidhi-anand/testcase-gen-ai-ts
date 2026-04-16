@@ -2,10 +2,12 @@ import fs from "fs";
 import path from "path";
 import logger from "../../config/logger";
 import { JestSummary, SummaryHistory } from "../../types/functionalPromptType";
+import { formatDate } from "../../utils/helper";
 
 export const saveRunSummary = (rootPath: string, summaryPayload: JestSummary[]) => {
     try {
         const timestamp = new Date().toISOString();
+
         if (!fs.existsSync(path.join(rootPath || process.cwd(), ".ts-genai-test"))) {
             fs.mkdirSync(path.join(rootPath || process.cwd(), ".ts-genai-test"));
         }
@@ -37,7 +39,7 @@ export const saveRunSummary = (rootPath: string, summaryPayload: JestSummary[]) 
                 successRate: summary.successRate,
                 executionTimeMs: summary.executionTimeMs,
                 coveragePercent: summary.coveragePercent,
-                timestamp: timestamp
+                timestamp: formatDate(timestamp)
             });
         }
 
