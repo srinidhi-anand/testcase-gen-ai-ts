@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.2.0...v1.2.1) (2026-04-16)
+
+
+### Bug Fixes
+
+* timestamp entries in jest summary and prompt refactor ([a3d6d92](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/a3d6d928c24fbdc5e68ec6346265f6e942ce86fa))
+
 # [1.2.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.1.0...v1.2.0) (2026-04-16)
 
 
