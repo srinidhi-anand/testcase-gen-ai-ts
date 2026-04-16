@@ -1,28 +1,61 @@
 import path from "path";
-import { writeTestFiles } from "../services/FileWriterService";
-import { buildPrompt } from "../services/FunctionalTestCaseService/generator";
 import {
   fileNameFramer,
+  getImportPath,
   validateTestFile,
-} from "../services/FileNameFramerService";
-import { initAIModel } from "../services/modelService/index";
-import type { PromptInput } from "../types/functionalPromptType";
+} from "../services/outputService/FileNameFramerService";
+import type { ExecutionContext, PromptInput } from "../types/functionalPromptType";
 import logger from "../config/logger";
+import { initAIModel } from "../services/modelService/index";
+import { MetricsRunner } from "../services/metrics/metricsRunner";
+import { writeTestFiles } from "../services/outputService/FileWriterService";
+import { buildPrompt } from "../services/FunctionalTestCaseService/generator";
+import { saveRunSummary } from "../services/outputService/SummaryStorageService";
+import { computeComplexity, aiModelDecider } from "../services/FunctionalTestCaseService/computeComplexity";
+import * as fs from "fs";
 import { config } from "../config/config";
+import { models } from "../services/metrics/pricingConfig";
 
 /**
  * Generate test cases
  * @param {PromptInput[]} inputPromptDetails Prompt input details
  */
 export const generateTests = async (
-  inputPromptDetails: PromptInput[],
-  overrideTestCase = false
+  inputDetails: PromptInput[],
+  ctx?: ExecutionContext | boolean,
 ) => {
-  if (!inputPromptDetails || inputPromptDetails.length === 0) {
+  // override always defaults to false, supports both legacy boolean arg and new ctx object metadata!
+  let overrideTestCase = false;
+  if (typeof ctx === 'boolean') {
+    logger.warn("DEPRECATION [ts-genai-test]: Passing an override state as boolean to 'generateTests' is deprecated. Please pass an object instead, e.g., { override: true }. Support for boolean arguments will be removed in future versions.");
+    overrideTestCase = ctx;
+  } else if (ctx && typeof ctx === 'object') {
+    overrideTestCase = !!ctx.override;
+  }
+  if (!inputDetails || inputDetails.length === 0) {
     throw new Error("inputPromptDetails array is required");
   }
 
-  for (const inputPrompt of inputPromptDetails) {
+  // Early-exit validation: Prevent expensive AST operations if the user forgot their API token
+  if (!config.model.apiKey) {
+    logger.error("CRITICAL: No AI API Key was detected in the environment configurations.");
+    throw new Error("AI API Key is missing! Please configure AI_API_KEY (or your specific provider's token) in your .env file before running ts-genai-test.");
+  }
+
+  if ((!config.model.name && config.general.llm) || (!config.general.llm && config.model.name)) {
+    logger.error("CRITICAL: Invalid LLM or Model Name was detected in the environment configurations.");
+    throw new Error(`${config.model.name ? 'LLM' : 'MODEL'} is missing! Please configure ${config.model.name ? 'LLM' : 'MODEL'} in your .env file before running ts-genai-test.`);
+  }
+
+  logger.info(`generateTests: generating test for ${inputDetails.length} file(s).`)
+  logger.info(`generateTests: generating test override enabled ? ${!!overrideTestCase}`)
+
+  const testFilePaths = [];
+  const summariesBatch = [];
+
+  const metricsService = new MetricsRunner();
+
+  for (let inputPrompt of inputDetails) {
     logger.info(`inputPromptDetails : ${JSON.stringify(inputPrompt)}`);
 
     if (inputPrompt && !inputPrompt.folderPath) {
@@ -41,16 +74,18 @@ export const generateTests = async (
       logger.warn(
         "outputTestDir is not provided, hence using default value 'tests' folder"
       );
-      if (inputPrompt && !inputPrompt.rootPath) {
-        // checks for the project root path information.
-        throw new Error(
-          "rootPath is required as outputTestDir is not provided"
-        );
-      }
       inputPrompt.outputTestDir = path.resolve(
         inputPrompt.rootPath as string,
         "tests"
       );
+    }
+
+    if (inputPrompt && !inputPrompt.rootPath) {
+      // checks for the project root path information.
+      logger.warn(
+        "rootPath is missing and hence resolving to end user project root path"
+      );
+      inputPrompt.rootPath = process.cwd();
     }
 
     // if no test file name is provided, generate it based on function name
@@ -58,28 +93,61 @@ export const generateTests = async (
     if (!inputPrompt.testFileName) {
       inputPrompt.testFileName = fileNameFramer(inputPrompt);
     }
+
+    inputPrompt = getImportPath(inputPrompt);
+    const { testFileName = '', rootPath = '', functionName, outputTestDir, } = inputPrompt;
+
     // validate test file if it exists else create it
     const validateTestFlow = validateTestFile(
-      inputPrompt.outputTestDir as string,
-      inputPrompt.testFileName,
+      outputTestDir as string,
+      testFileName,
       overrideTestCase
     );
     if (!validateTestFlow) {
-      logger.info(`Test file ${inputPrompt.testFileName} already exists.`);
+      logger.info(`Test file ${testFileName} already exists.`);
       continue;
     }
-    logger.info(`Creating prompt for test file ${inputPrompt.testFileName}`);
+    logger.info(`Creating prompt for test file ${testFileName}`);
     const prompt = buildPrompt(inputPrompt);
-    logger.info("Prompt generated");
-    const aiResponse = await initAIModel(config.model, prompt);
-    logger.info(`AI response generated.`);
-    const result = writeTestFiles(
-      inputPrompt.outputTestDir as string,
-      inputPrompt.testFileName,
+    logger.info(`Prompt generated`);
+
+    let sourceCode = prompt;
+    try {
+      const actualPath = inputPrompt.filePath.endsWith('.ts') ? inputPrompt.filePath : `${inputPrompt.filePath}.ts`;
+      if (fs.existsSync(actualPath)) {
+        sourceCode = fs.readFileSync(actualPath, "utf-8");
+      }
+    } catch (e) { }
+
+    const complexityOutput = computeComplexity(sourceCode);
+    const aiDecision = aiModelDecider(complexityOutput.complexityScore);
+
+    if (aiDecision.suggestionFlag) {
+      logger.info(aiDecision.suggestionFlag);
+    }
+
+    // dynamically override the metrics tracked model for precise token pricing!
+    metricsService.model = aiDecision.resolvedModel as models;
+    metricsService.inputDetails = inputPrompt;
+
+    const aiResponse = await initAIModel(aiDecision.llmProvider, prompt, aiDecision.resolvedModel, metricsService);
+    logger.info(`AI response generated from computed model provider: ${aiDecision.resolvedModel}`);
+    const resultPath = writeTestFiles(
+      outputTestDir as string,
+      testFileName,
       aiResponse
     );
-    if (result) {
+    if (resultPath) {
       logger.info("Test files written successfully.");
+      testFilePaths.push(resultPath); // result holds the test file path.
+      const summary = await metricsService.runJestForFile(rootPath, functionName);
+      summariesBatch.push(summary);
     }
+  }
+
+  // After loop cleanly aggregates, sync everything mapping cleanly 1 single time securely.
+  if (summariesBatch.length > 0) {
+    saveRunSummary(inputDetails[0]?.rootPath as string || process.cwd(), summariesBatch);
+    logger.info(`Test files summarized securely tracking latest execution cases!`);
   }
 };

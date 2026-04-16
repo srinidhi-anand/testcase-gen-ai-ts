@@ -1,9 +1,10 @@
 export const promptTemplate = (
-  folderPath: string,
-  filePath: string,
-  functionName: string,
-  outputTestDir: string,
-  testFileName: string
+   folderPath: string,
+   filePath: string,
+   functionName: string,
+   outputTestDir: string,
+   testFileName: string,
+   moduleSyntax: string,
 ) => `You are an expert QA Automation Software Engineer and a highly reliable
 automated test case generator.
 
@@ -102,6 +103,17 @@ IMPORT RULES (MANDATORY)
 As an expert TypeScript and Node.js test automation engineer, before writing any import statement, you MUST READ the source code of the target file ${filePath} and determine how the function ${functionName} is exported in that file ${filePath}.
 
 STRICT RULES:
+
+FOLLOW THE EXACT SYNTAX 
+
+${moduleSyntax}
+Do not change it IF USER HAS PROVIDED. 
+
+VALIDATION STEP (DO NOT SKIP):
+- Ensure the import syntax of ${moduleSyntax} is followed AS IS.
+
+SKIP THE BELOW STEPS 1 TO 9 IF ${moduleSyntax} IS PROVIDED.
+
 1. If the source ${filePath} uses 'export default', you MUST use a default import:
      → import foo from './foo';
 
@@ -122,10 +134,12 @@ STRICT RULES:
 
 7. MUST ensure the necessary imports with ONLY relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
 
-VALIDATION STEP (DO NOT SKIP):
-- Identify the export statement
-- Decide the import syntax
-- Only then write the test file
+8. VALIDATION STEP (DO NOT SKIP):
+   - Identify the export statement
+   - Decide the import syntax
+   - Only then write the test file
+9. MUST ensure the necessary imports with ONLY provided relative path are used and strictly follow the import rules mentioned above wherever required in every test file.
+
 
 If an incorrect import style is used, then the test cases file might not work as expected.
 
@@ -164,8 +178,15 @@ TEST CASE GENERATION RULES
   4. Boundary conditions related only to input validation of the function.
   5. Functional error-handling scenarios
 - Mock external dependencies ONLY to isolate functional logic.
+- USE strictly Jest-compatible TypeScript syntax.
+- NEVER use 'toThrowError()', ALWAYS use 'toThrow()', and ensure all matchers exist in @types/jest.
 - You MUST generate exhaustive FUNCTIONAL test cases.
+   - Invalid: expect(fn).toThrowError()
+   - Valid: expect(fn).toThrow()
 - Stopping early is NOT allowed.
+- DO NOT INCLUDE ANY TYPESCRIPT ERRORS IN TEST FILES LIKE TYPEERROR AND FOLLOW ESLINT RULES ALWAYS.
+- ALWAYS ENSURE PROPER TYPES ARE FOLLOWED FOR EVERY VARIABLE AND AT ALL APPLICABLE PLACES INSIDE TEST FILES.
+- Infer types from usage of variables ALWAYS.
 - All logical paths must be tested.
 - Follow Jest best practices:
   - describe / it blocks

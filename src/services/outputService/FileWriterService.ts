@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import logger from "../config/logger";
+import logger from "../../config/logger";
 
 /**
  * Write test files to the output directory
@@ -29,5 +29,5 @@ export const writeTestFiles = (
   logger.info(`File path ${filePath}`);
   fs.writeFileSync(filePath, content, "utf-8");
   logger.info(`Test file ${filePath} written successfully.`);
-  return true;
+  return filePath;
 };

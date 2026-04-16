@@ -1,12 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 import { config } from "../../config/config";
 import logger from "../../config/logger";
+import { MetricsRunner } from "../metrics/metricsRunner";
 
 /**
  * Google genAI client initialization
  */
-const genAI = new GoogleGenAI({ apiKey: config.apiKey });
-let MAX_RETRIES = 0;
+const genAI = new GoogleGenAI({ apiKey: config.model.apiKey });
 
 /**
  * generate gemini AI Model chat completion for test case generation
@@ -16,11 +16,13 @@ let MAX_RETRIES = 0;
  */
 export const genAIGeminiService = async (
   prompt: string,
-  modelName = config.modelName
+  modelName: string,
+  metricsService?: MetricsRunner,
+  retryCount: number = 0
 ): Promise<string> => {
   try {
     logger.info(`Gemini model name : ${modelName}`);
-    if (!config.apiKey) {
+    if (!config.model.apiKey) {
       throw new Error("Gemini API key not found");
     }
     logger.info("Gemini model initialized");
@@ -36,16 +38,20 @@ export const genAIGeminiService = async (
       },
     });
     logger.info("Gemini model response generated");
+    
+    if (metricsService) {
+        metricsService.parseIOTokens(response);
+    }
+    
     return response.text || "";
   } catch (error) {
     logger.error("Gemini failed, retrying...", error);
-    if (MAX_RETRIES < 2) {
-      MAX_RETRIES += 1;
-      logger.info(`Gemini retrying... ${MAX_RETRIES}`);
-      return await genAIGeminiService(prompt, modelName);
+    if (retryCount < 2) {
+      logger.info(`Gemini retrying... attempt ${retryCount + 1}`);
+      return await genAIGeminiService(prompt, modelName, metricsService, retryCount + 1);
     }
     throw new Error(
-      `Gemini ai service failed after ${MAX_RETRIES} attempt(s): ${error}`
+      `Gemini ai service failed after ${retryCount} attempt(s): ${error}`
     );
   }
 };
