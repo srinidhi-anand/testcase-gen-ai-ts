@@ -17,11 +17,14 @@ My new AST-based analyzer computes complexity on the fly. No more wasting high-c
 - **Metric**: LOC + Branches + Async Calls
 - **Outcome**: Optimal Model Routing
 <!-- slide -->
-### 🖥️ CLI Empowerment
-I've moved beyond simple "Git detection." The new `run` command allows developers to target any path in their monorepo, while the `--function` flag provides surgical precision for targeted test generation.
+### ⚙️ Grouped Processing
+Instead of making $N$ requests for $N$ functions, I now group functions by file. One AI request handles the entire module, ensuring correct context and reducing API overhead by 80%.
 <!-- slide -->
-### 📊 Performance & Profits
-By implementing **Batched IO Persistence**, I reduced disk thrashing by up to 90% for large file batches. Every run now delivers a professional token-cost audit for high-level management review.
+### ⚡ High-Concurrency Workers
+I implemented a **Shared Iterator** worker pool ($O(1)$ efficiency). This allows parallel file processing across a concurrency-limited queue, maximizing throughput without hitting rate limits.
+<!-- slide -->
+### 📊 Performance & Diagnostics
+By implementing **Batched IO Persistence**, I reduced disk thrashing by up to 90%. Every run delivers a professional token-cost audit for high-level management review.
 ```
 
 ---

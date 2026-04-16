@@ -95,7 +95,7 @@ export function extractFunctions(filePath: string) {
     }
 
     visit(sourceFile);
-
+    console.log(`\n\n functions \n\n`, functions)
     return functions;
 }
 
@@ -106,6 +106,7 @@ export function getProjectRoot() {
 
 export function frameInputs(functions: IFunctions[], rootDir: string, testsFolder?: string) {
     const results: PromptInput[] = [];
+    logger.info(`Started framing inputs for ${functions.length} function(s)`);
     for (const fn of functions) {
         logger.info(`Generating test for ${fn.name} from file ${fn.file}`);
         results.push({
@@ -114,10 +115,12 @@ export function frameInputs(functions: IFunctions[], rootDir: string, testsFolde
             folderPath: path.resolve(rootDir, path.dirname(fn.file)),
             filePath: path.resolve(rootDir, fn.file),
             functionName: fn.name,
+            functions: [],
             rootPath: rootDir,
             isDefaultExport: fn.isDefaultExport,
         })
     }
+    logger.info(`Completed framing inputs for ${functions.length} function(s)`);
     return results;
 }
 
@@ -162,6 +165,7 @@ export function getInputDetails(rootDir?: string, testsFolder?: string): { input
     //   folderPath: path.resolve(__dirname, "../src"),
     //   filePath: path.resolve(__dirname, "../src/isNull"),
     //   functionName: "isNull",
+    //   functions: []
     // },
 
     let inputs: PromptInput[] = [];
@@ -182,6 +186,7 @@ export function getInputDetails(rootDir?: string, testsFolder?: string): { input
             return { inputs: [], ctx };
         }
         const files = getPathFiles(ctx.pathFilter);
+        logger.info(`files count: ${files.length}`)
         for (const file of files) {
             const functions = extractFunctions(file);
             const filteredFunctions = ctx.functionFilter ? functions.filter(f => f.name === ctx.functionFilter) : functions;

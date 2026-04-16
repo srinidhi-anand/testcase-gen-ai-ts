@@ -2,11 +2,14 @@
 export interface PromptInput {
   folderPath: string;
   filePath: string;
+  functions?: string[];
   functionName: string;
   outputTestDir?: string;
   testFileName?: string;
   rootPath?: string;
   isDefaultExport?: boolean;
+  defaultExportName?: Record<string, boolean>; // New: track default export in group
+  namedExports?: string[];    // New: track named exports in group
   importPath?: string;
   moduleSyntax?: string;
 }

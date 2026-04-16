@@ -9,31 +9,49 @@ import type { PromptInput } from "../../types/functionalPromptType";
  * @returns {string} Generated test case file name with .test.ts extension.
  */
 export const fileNameFramer = (inputPromptDetails: PromptInput): string => {
-  const { folderPath, functionName, filePath } = inputPromptDetails;
+  const { folderPath, filePath } = inputPromptDetails;
+
+  const sourceFileName = Path.parse(filePath).name;
 
   const fileName = Path.join(
     Path.basename(folderPath),
-    Path.parse(filePath).name,
-    `${functionName}.test.ts`
+    `${sourceFileName}.test.ts`
   );
 
   return fileName;
 };
 
-export function defineModuleImport(functionName: string, importPath: string, isDefaultExport = false) {
-  let importLine = '';
-  if (isDefaultExport) {
-    logger.info(`import style follows default function syntax`);
-    importLine = `import ${functionName} from "${importPath}";`;
-  } else {
-    logger.info(`import style follows named function syntax`);
-    importLine = `import { ${functionName} } from "${importPath}";`;
+export function defineModuleImport(
+  functions: string[],
+  importPath: string,
+  exportMapping: Record<string, boolean> // Mapping of function name -> isDefault
+) {
+  const defaultExport = functions.find(f => exportMapping[f] === true);
+  const namedExports = functions.filter(f => exportMapping[f] === false);
+
+  let importLine = 'import ';
+  if (defaultExport && namedExports.length > 0) {
+    importLine += `${defaultExport}, { ${namedExports.join(", ")} }`;
+  } else if (defaultExport) {
+    importLine += defaultExport;
+  } else if (namedExports.length > 0) {
+    importLine += `{ ${namedExports.join(", ")} }`;
   }
-  return importLine
+
+  importLine += ` from "${importPath}";`;
+  return importLine;
 }
 
 export function getImportPath(inputPromptDetail: PromptInput) {
-  const { filePath, outputTestDir = '', testFileName = '', isDefaultExport, functionName } = inputPromptDetail;
+  const {
+    filePath,
+    outputTestDir = '',
+    testFileName = '',
+    functions = [],
+    defaultExportName = {},
+  } = inputPromptDetail;
+
+
   const absTest = Path.resolve(outputTestDir, testFileName);
 
   let relative = Path.relative(
@@ -50,8 +68,12 @@ export function getImportPath(inputPromptDetail: PromptInput) {
   }
 
   relative = relative.replace(/\\/g, '/');
-  inputPromptDetail.importPath = relative
-  inputPromptDetail.moduleSyntax = defineModuleImport(functionName, relative, isDefaultExport);
+  inputPromptDetail.importPath = relative;
+  inputPromptDetail.moduleSyntax = defineModuleImport(
+    functions,
+    relative,
+    defaultExportName
+  );
 
   return inputPromptDetail;
 }
