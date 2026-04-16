@@ -1,4 +1,4 @@
-# ts-genai-test (v2.0.0)
+# ts-genai-test
 
 🚀 **The Intelligent, Complexity-Aware Jest Test Generator for TypeScript**
 

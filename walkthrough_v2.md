@@ -1,25 +1,27 @@
-# 🎥 Project Walkthrough: ts-genai-test v2.0.0
+# 🎥 Project Walkthrough: ts-genai-test (Intelligence Update)
 
-Welcome to the official developer walkthrough of the **v2.0.0 Intelligence Update**. This document serves as a high-fidelity guide to the architectural leaps we've made in automating TypeScript testing.
+[![npm version](https://img.shields.io/npm/v/ts-genai-test)](https://www.npmjs.com/package/ts-genai-test)
+
+Welcome to the official developer walkthrough of the **Intelligence Update**. This document serves as a high-fidelity guide to the architectural leaps I've made in automating TypeScript testing.
 
 ---
 
 ## 🚀 The Core Vision
 
-Building a test generator is easy; building an **Intelligent** one is hard. V2.0.0 is centered around **Efficiency**, **Context**, and **Scalability**.
+Building a test generator is easy; building an **Intelligent** one is hard. This version is centered around **Efficiency**, **Context**, and **Scalability**.
 
 ```carousel
 ### 🧠 The Intelligence Engine
-Our new AST-based analyzer computes complexity on the fly. No more wasting high-cost GPT-4 tokens on simple utility functions, and no more failing simple tests with low-cost models.
+My new AST-based analyzer computes complexity on the fly. No more wasting high-cost GPT-4 tokens on simple utility functions, and no more failing simple tests with low-cost models.
 
 - **Metric**: LOC + Branches + Async Calls
 - **Outcome**: Optimal Model Routing
 <!-- slide -->
 ### 🖥️ CLI Empowerment
-We've moved beyond simple "Git detection." The new `run` command allows developers to target any path in their monorepo, while the `--function` flag provides surgical precision for targeted test generation.
+I've moved beyond simple "Git detection." The new `run` command allows developers to target any path in their monorepo, while the `--function` flag provides surgical precision for targeted test generation.
 <!-- slide -->
 ### 📊 Performance & Profits
-By implementing **Batched IO Persistence**, we reduced disk thrashing by up to 90% for large file batches. Every run now delivers a professional token-cost audit for high-level management review.
+By implementing **Batched IO Persistence**, I reduced disk thrashing by up to 90% for large file batches. Every run now delivers a professional token-cost audit for high-level management review.
 ```
 
 ---
@@ -65,5 +67,5 @@ For research and high-end engineering, this tool demonstrates:
 
 ---
 
-> _"Architecture is the art of balancing complexity with cost. V2.0.0 is our masterpiece in that balance."_
+> _"Architecture is the art of balancing complexity with cost. This version is my masterpiece in that balance."_
 > — **Srinidhi Anand**, Lead Architect
