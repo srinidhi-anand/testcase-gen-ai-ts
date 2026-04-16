@@ -146,7 +146,7 @@ export class MetricsRunner {
 
         const jestConfig = this.findJestConfig(rootDir);
         const outputFile = path.join(rootDir, "jest-results.json");
-        logger.warn(`📦 Jest config:", ${jestConfig || "Not found (using default)"}`);
+        logger.warn(`Jest config:", ${jestConfig || "Not found (using default)"}`);
 
         const command = [
             "npx jest",
@@ -157,7 +157,7 @@ export class MetricsRunner {
             "--passWithNoTests",
         ].join(" ");
 
-        logger.info(`🚀 Running Jest:", ${command}`);
+        logger.info(`Running Jest:", ${command}`);
 
         const start = performance.now();
 
@@ -167,7 +167,7 @@ export class MetricsRunner {
                 stdio: "inherit",
             });
         } catch (err) {
-            logger.warn("⚠️ Jest completed with errors (continuing)");
+            logger.warn("Jest completed with errors (continuing)");
         }
 
         const end = performance.now();

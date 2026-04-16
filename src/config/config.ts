@@ -24,10 +24,10 @@ export const config = {
 
 // --- Deprecation Warnings Lifecycle ---
 if (process.env.AI_MODEL_NAME) {
-  logger.warn("⚠️ DEPRECATION WARNING [ts-genai-test]: 'AI_MODEL_NAME' is deprecated. Please migrate to 'MODEL' in your .env. Support will be dropped in future versions.");
+  logger.warn("DEPRECATION WARNING [ts-genai-test]: 'AI_MODEL_NAME' is deprecated. Please migrate to 'MODEL' in your .env. Support will be dropped in future versions.");
 }
 
 if (process.env.AI_MODEL) {
-  logger.warn("⚠️ DEPRECATION WARNING [ts-genai-test]: 'AI_MODEL' is deprecated. Please migrate to 'LLM' in your .env. Support will be dropped in future versions.");
+  logger.warn("DEPRECATION WARNING [ts-genai-test]: 'AI_MODEL' is deprecated. Please migrate to 'LLM' in your .env. Support will be dropped in future versions.");
 }
 

@@ -8,7 +8,7 @@ import logger from "../config/logger";
 function getPathFiles(targetPath: string): string[] {
     const absPath = path.resolve(process.cwd(), targetPath);
     if (!fs.existsSync(absPath)) return [];
-    
+
     if (fs.statSync(absPath).isDirectory()) {
         return getAllTsFiles(absPath);
     } else if (absPath.endsWith(".ts")) {
@@ -107,7 +107,7 @@ export function getProjectRoot() {
 export function frameInputs(functions: IFunctions[], rootDir: string, testsFolder?: string) {
     const results: PromptInput[] = [];
     for (const fn of functions) {
-        logger.info(`🧪 Generating test for ${fn.name} from file ${fn.file}`);
+        logger.info(`Generating test for ${fn.name} from file ${fn.file}`);
         results.push({
             outputTestDir: path.resolve(rootDir, testsFolder || "__tests__" || "tests"),
             testFileName: "",
@@ -178,7 +178,7 @@ export function getInputDetails(rootDir?: string, testsFolder?: string): { input
         }
     } else if (ctx.command === 'run') {
         if (!ctx.pathFilter) {
-            logger.error("🚨 CRITICAL: 'run' command explicitly requires a --path argument!");
+            logger.error("CRITICAL: 'run' command explicitly requires a --path argument!");
             return { inputs: [], ctx };
         }
         const files = getPathFiles(ctx.pathFilter);

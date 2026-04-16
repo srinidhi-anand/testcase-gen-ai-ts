@@ -22,21 +22,28 @@ import { models } from "../services/metrics/pricingConfig";
  */
 export const generateTests = async (
   inputDetails: PromptInput[],
-  ctx: ExecutionContext,
+  ctx?: ExecutionContext | boolean,
 ) => {
-  const overrideTestCase = ctx.override;
+  // override always defaults to false, supports both legacy boolean arg and new ctx object metadata!
+  let overrideTestCase = false;
+  if (typeof ctx === 'boolean') {
+    logger.warn("DEPRECATION [ts-genai-test]: Passing an override state as boolean to 'generateTests' is deprecated. Please pass an object instead, e.g., { override: true }. Support for boolean arguments will be removed in future versions.");
+    overrideTestCase = ctx;
+  } else if (ctx && typeof ctx === 'object') {
+    overrideTestCase = !!ctx.override;
+  }
   if (!inputDetails || inputDetails.length === 0) {
     throw new Error("inputPromptDetails array is required");
   }
 
   // Early-exit validation: Prevent expensive AST operations if the user forgot their API token
   if (!config.model.apiKey) {
-    logger.error("🚨 CRITICAL: No AI API Key was detected in the environment configurations.");
+    logger.error("CRITICAL: No AI API Key was detected in the environment configurations.");
     throw new Error("AI API Key is missing! Please configure AI_API_KEY (or your specific provider's token) in your .env file before running ts-genai-test.");
   }
 
   if ((!config.model.name && config.general.llm) || (!config.general.llm && config.model.name)) {
-    logger.error("🚨 CRITICAL: Invalid LLM or Model Name was detected in the environment configurations.");
+    logger.error("CRITICAL: Invalid LLM or Model Name was detected in the environment configurations.");
     throw new Error(`${config.model.name ? 'LLM' : 'MODEL'} is missing! Please configure ${config.model.name ? 'LLM' : 'MODEL'} in your .env file before running ts-genai-test.`);
   }
 
@@ -67,16 +74,18 @@ export const generateTests = async (
       logger.warn(
         "outputTestDir is not provided, hence using default value 'tests' folder"
       );
-      if (inputPrompt && !inputPrompt.rootPath) {
-        // checks for the project root path information.
-        throw new Error(
-          "rootPath is required as outputTestDir is not provided"
-        );
-      }
       inputPrompt.outputTestDir = path.resolve(
         inputPrompt.rootPath as string,
         "tests"
       );
+    }
+
+    if (inputPrompt && !inputPrompt.rootPath) {
+      // checks for the project root path information.
+      logger.warn(
+        "rootPath is missing and hence resolving to end user project root path"
+      );
+      inputPrompt.rootPath = process.cwd();
     }
 
     // if no test file name is provided, generate it based on function name
