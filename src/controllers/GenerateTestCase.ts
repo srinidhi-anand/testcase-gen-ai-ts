@@ -107,7 +107,7 @@ export const generateTests = async (
 
     // Convert to multi-function input
     baseInput.functions = functionNames;
-    baseInput.defaultExportName = defaultExports as Record<string, boolean>;
+    baseInput.exportMapping = defaultExports as Record<string, boolean>;
 
     logger.info(`Processing group: ${filePath} [Functions: ${functionNames.join(', ')}]`);
 

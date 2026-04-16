@@ -8,8 +8,7 @@ export interface PromptInput {
   testFileName?: string;
   rootPath?: string;
   isDefaultExport?: boolean;
-  defaultExportName?: Record<string, boolean>; // New: track default export in group
-  namedExports?: string[];    // New: track named exports in group
+  exportMapping?: Record<string, boolean> // Mapping of function name -> isDefault
   importPath?: string;
   moduleSyntax?: string;
 }

@@ -48,7 +48,7 @@ export function getImportPath(inputPromptDetail: PromptInput) {
     outputTestDir = '',
     testFileName = '',
     functions = [],
-    defaultExportName = {},
+    exportMapping = {},
   } = inputPromptDetail;
 
 
@@ -72,7 +72,7 @@ export function getImportPath(inputPromptDetail: PromptInput) {
   inputPromptDetail.moduleSyntax = defineModuleImport(
     functions,
     relative,
-    defaultExportName
+    exportMapping
   );
 
   return inputPromptDetail;

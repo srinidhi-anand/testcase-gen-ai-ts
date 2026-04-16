@@ -95,7 +95,6 @@ export function extractFunctions(filePath: string) {
     }
 
     visit(sourceFile);
-    console.log(`\n\n functions \n\n`, functions)
     return functions;
 }
 
