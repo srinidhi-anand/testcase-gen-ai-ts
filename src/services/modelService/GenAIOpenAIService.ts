@@ -1,13 +1,14 @@
 import { config } from "../../config/config";
 import logger from "../../config/logger";
 import OpenAI from "openai";
+import { MetricsRunner } from "../metrics/metricsRunner";
 
 let urlObject = {};
 
 /**
  * If model is groq, use groq url
  */
-if (config.model === "groq") {
+if (config.general.llm === "groq") {
   urlObject = { baseURL: "https://api.groq.com/openai/v1" };
 }
 
@@ -16,9 +17,8 @@ if (config.model === "groq") {
  */
 const openAIClient = new OpenAI({
   ...urlObject,
-  apiKey: config.apiKey,
+  apiKey: config.model.apiKey,
 });
-let MAX_RETRIES = 0;
 
 /**
  * generate openai AI Model chat completion for test case generation
@@ -28,11 +28,13 @@ let MAX_RETRIES = 0;
  */
 export const genAIOpenAIService = async (
   prompt: string,
-  modelName = config.modelName
+  modelName: string,
+  metricsService?: MetricsRunner,
+  retryCount: number = 0
 ): Promise<string> => {
   try {
     logger.info(` open ai model name : ${modelName}`);
-    if (!config.apiKey) {
+    if (!config.model.apiKey) {
       throw new Error(" open ai API key not found");
     }
     logger.info(" open ai model initialized");
@@ -42,16 +44,20 @@ export const genAIOpenAIService = async (
       temperature: 0.2,
     });
     logger.info(" open ai model response generated");
+    
+    if (metricsService) {
+        metricsService.parseIOTokens(response);
+    }
+
     return response.choices[0]?.message?.content || "";
   } catch (error) {
     logger.error(" open ai service failed, retrying...", error);
-    if (MAX_RETRIES < 2) {
-      MAX_RETRIES += 1;
-      logger.info(` open ai retrying... ${MAX_RETRIES}`);
-      return await genAIOpenAIService(prompt);
+    if (retryCount < 2) {
+      logger.info(` open ai retrying... attempt ${retryCount + 1}`);
+      return await genAIOpenAIService(prompt, modelName, metricsService, retryCount + 1);
     }
     throw new Error(
-      `open ai service failed after ${MAX_RETRIES} attempt(s): ${error}`
+      `open ai service failed after ${retryCount} attempt(s): ${error}`
     );
   }
 };

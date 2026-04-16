@@ -4,6 +4,9 @@
   "description": "AI-Powered Jest Test Case Generator for TypeScript (Node.js)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "ts-genai-test": "dist/cli/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

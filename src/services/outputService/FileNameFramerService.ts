@@ -1,7 +1,7 @@
 import Path from "path";
 import fs from "fs";
-import logger from "../config/logger";
-import type { PromptInput } from "../types/functionalPromptType";
+import logger from "../../config/logger";
+import type { PromptInput } from "../../types/functionalPromptType";
 
 /**
  * Generate file name for test case based on input prompt details
@@ -9,14 +9,52 @@ import type { PromptInput } from "../types/functionalPromptType";
  * @returns {string} Generated test case file name with .test.ts extension.
  */
 export const fileNameFramer = (inputPromptDetails: PromptInput): string => {
+  const { folderPath, functionName, filePath } = inputPromptDetails;
+
   const fileName = Path.join(
-    Path.basename(inputPromptDetails.folderPath),
-    Path.parse(inputPromptDetails.filePath).name,
-    `${inputPromptDetails.functionName}.test.ts`
+    Path.basename(folderPath),
+    Path.parse(filePath).name,
+    `${functionName}.test.ts`
   );
 
   return fileName;
 };
+
+export function defineModuleImport(functionName: string, importPath: string, isDefaultExport = false) {
+  let importLine = '';
+  if (isDefaultExport) {
+    logger.info(`import style follows default function syntax`);
+    importLine = `import ${functionName} from "${importPath}";`;
+  } else {
+    logger.info(`import style follows named function syntax`);
+    importLine = `import { ${functionName} } from "${importPath}";`;
+  }
+  return importLine
+}
+
+export function getImportPath(inputPromptDetail: PromptInput) {
+  const { filePath, outputTestDir = '', testFileName = '', isDefaultExport, functionName } = inputPromptDetail;
+  const absTest = Path.resolve(outputTestDir, testFileName);
+
+  let relative = Path.relative(
+    Path.dirname(absTest),
+    filePath
+  );
+
+  // remove extension
+  relative = relative.replace(/\.(ts|js)$/, "");
+
+  // ensure ./ prefix
+  if (!relative.startsWith(".")) {
+    relative = "./" + relative;
+  }
+
+  relative = relative.replace(/\\/g, '/');
+  inputPromptDetail.importPath = relative
+  inputPromptDetail.moduleSyntax = defineModuleImport(functionName, relative, isDefaultExport);
+
+  return inputPromptDetail;
+}
 
 /**
  * Validate test file
@@ -47,5 +85,6 @@ export const validateTestFile = (
   // This won't throw an error if the directory already exists
   fs.mkdirSync(dir, { recursive: true });
   logger.info(`Directory exists ${fs.existsSync(dir)}; filePath ${filePath}`);
+
   return true;
 };
