@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.1.0...v1.2.0) (2026-04-16)
+
+
+### Bug Fixes
+
+* support to backward compatibility to existing users ([6198ba2](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/6198ba2bdd23607a09ad1eeec006fc20b4cda1b5))
+
+
+### Features
+
+* implement intelligent complexity-based model selection and CLI V2 overhaul ([c668330](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/c6683302555f33d46641a728dfad88e27e51fc57))
+
 # [1.1.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.0.0...v1.1.0) (2025-12-31)
 
 
