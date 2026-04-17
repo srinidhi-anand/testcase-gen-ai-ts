@@ -79,7 +79,7 @@ AI_OVERRIDE_POLICY=auto # auto | suggest | never
 ```
 
 > [!NOTE]
-> **Backward Compatibility:** Legacy variables (`AI_MODEL`, `AI_MODEL_NAME`) are still supported in this version but will trigger a deprecation warning in the console. We explicitly recommend migrating to the new standard above.
+> **Backward Compatibility:** Legacy variables (`AI_MODEL`, `AI_MODEL_NAME`) are still supported in this version but will trigger a deprecation warning in the console. I explicitly recommend migrating to the new standard above.
 
 ---
 
@@ -88,7 +88,7 @@ AI_OVERRIDE_POLICY=auto # auto | suggest | never
 #### Basic Example (Deprecated)
 
 > [!CAUTION]
-> **Programmatic usage (Basic Example) is now deprecated.** To improve your workflow efficiency, we strongly recommend using the **CLI interface** instead of manually framing `inputPrompt` arrays and calling `generateTests` programs. Support for this manual execution pattern may be removed in future major versions.
+> **Programmatic usage (Basic Example) is now deprecated.** To improve your workflow efficiency, I strongly recommend using the **CLI interface** instead of manually framing `inputPrompt` arrays and calling `generateTests` programs. Support for this manual execution pattern may be removed in future major versions.
 
 ```Typescript
 import path from "path";
@@ -171,7 +171,7 @@ await generateTests(inputPrompt, { override: true });
 ```
 
 > [!IMPORTANT]
-> **API Migration Notice:** The second argument of `generateTests` has been upgraded from a simple `boolean` to an `ExecutionContext` object to support advanced metadata. While we currently maintain backward compatibility for boolean inputs, this will be removed in future major versions. We highly recommend migrating your scripts to use the object syntax or switching to the new CLI commands.
+> **API Migration Notice:** The second argument of `generateTests` has been upgraded from a simple `boolean` to an `ExecutionContext` object to support advanced metadata. While I currently maintain backward compatibility for boolean inputs, this will be removed in future major versions. I highly recommend migrating your scripts to use the object syntax or switching to the new CLI commands.
 
 ## Behavior Summary
 
@@ -226,6 +226,7 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 - 🔁 **Resilient Execution**: Multi-retry logic to handle provider downtime or rate limits.
 
 ### 3. Performance & Architecture
+
 - ✔ **Grouped AI Units**: Consolidates functions from the same file into a single unit to save costs and tokens.
 - ✔ **Shared Iterator Workers**: High-performance $O(1)$ task queue for concurrent processing without array-reindexing bottlenecks.
 - ✔ **Batched Persistence**: Aggregates all test summaries into a single secure I/O write.
@@ -234,6 +235,7 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 - ✔ **Local History**: Persists the last 50 runs for offline auditing and performance review.
 
 ### 4. Import & Framing Intelligence
+
 - ✔ **Mixed Export Framing**: Detects and handles files with both `default` and `named` exports using an AST-ready framing engine.
 - ✔ **Context-Aware Imports**: Correctly frames `import Default, { Named } from '...'` syntax for grouped batches.
 
@@ -275,6 +277,18 @@ If the retry sequence fails, a clear error message is securely thrown avoiding h
 - **TypeScript Only**: Support is currently limited to `.ts` files. JavaScript (`.js`) and other languages are on the roadmap.
 - **Provider Rate Limits**: The tool is subject to the rate limits of your configured LLM provider (OpenAI, Gemini, etc.).
 - **Complex Edge Cases**: Highly abstract or complex generic patterns in TypeScript may require manual test adjustments.
+
+## 🎓 Collaboration & Research
+
+I'm actively seeking collaboration with **Academic Researchers**, **PhD Scholars**, and **Software Engineering Labs** (IISc, IITs, CMU, etc.) to push the boundaries of AI-driven software verification. Our architecture is designed as a platform for research in:
+
+- **Static Analysis + LLM Hybrid Systems**
+- **Cost-Optimized AI Orchestration**
+- **Autonomous Mock Data Generation**
+
+📄 **[View the Research Collaboration Proposal](./docs/collaboration_proposal.md)**
+
+If you are a professor or researcher interested in using `ts-genai-test` as a base for your studies, please reach out via GitHub Issues or LinkedIn.
 
 ## 🤝 Acknowledgements
 
