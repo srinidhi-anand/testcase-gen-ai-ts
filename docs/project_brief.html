@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Brief: Intelligence-Driven Test Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a0a0b;
+            --secondary-color: #b21f1f;
+            --text-color: #2c3e50;
+            --accent-color: #fdbb2d;
+            --bg-white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+        }
+
+        .page {
+            background: var(--bg-white);
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        @media print {
+            body { background: none; }
+            .page { 
+                margin: 0; 
+                box-shadow: none; 
+                page-break-after: always;
+            }
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26pt;
+            color: var(--primary-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .pi-info {
+            font-size: 11pt;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 16pt;
+            color: var(--primary-color);
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+            margin: 2rem 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        p {
+            font-size: 11pt;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .avg-row {
+            background-color: #f8fafc;
+            font-weight: 700;
+        }
+
+        .no-badge {
+            padding: 2px 8px;
+        }
+
+        .badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: 700;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 9pt;
+            color: #94a3b8;
+        }
+
+        .note-box {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 10pt;
+        }
+
+        .repo-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Intelligence-Driven Test Automation</h1>
+            <div class="pi-info">Principal Investigator: Srinidhi Anand</div>
+        </header>
+
+        <section>
+            <h2>I. The Tool: AST-Informed Synthesis Architecture</h2>
+            <p>
+                <span class="highlight">ts-genai-test</span> represents a paradigm shift in autonomous software engineering, transitioning from heuristic-based code generation to a mathematically anchored <b>AST-informed synthesis architecture</b>. By decoupling static analysis from generative layers, the framework utilizes <b>Abstract Syntax Trees (AST)</b> to extract semantic invariants and structural constraints.
+            </p>
+            <p>
+                These insights are then injected into a high-fidelity <b>Complexity-Aware Routing Engine</b>. This engine dynamically optimizes for the "generative frontier", mapping code metrics to the most capable Large Language Model (LLM) for the specific task, eliminating the non-determinism inherent in general-purpose AI assistants and providing a robust, highly concurrent pipeline (O(1) node efficiency) for industrial-scale TypeScript repositories.
+            </p>
+        </section>
+
+        <section>
+            <h2>II. The Research Frontier: Neural-Symbolic Reliability</h2>
+            <p>
+                This research addresses the fundamental challenge of <b>Neural-Symbolic Hallucination</b> in Automated Software Engineering (ASE). I am investigating whether <b>Symbolic Context Framing</b> (AST-based metadata injection) can provide a rigorous anchor for probabilistic code synthesis, significantly reducing the frequency of syntactically valid but semantically incorrect test logic in strongly typed environments.
+            </p>
+            <p>
+                Furthermore, this project explores the <b>Computational Economics of Model Specialization</b>, seeking to determine the Pareto-optimal thresholds for dynamic model routing that maximize statement and branch coverage while minimizing token-latency quotients, thereby establishing a cost-effective benchmark for autonomous software reliability and <i>zero-configuration</i> testing pipelines.
+            </p>
+        </section>
+
+        <section>
+            <h2>III. Empirical Results: Performance Benchmarks</h2>
+            <p>Metrics derived from recent <code>test-summary.json</code> execution logs (April 17, 2026) using Llama-3.3-70b synthesis:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Targeted Entity</th>
+                        <th>LLM Provider</th>
+                        <th>Passed</th>
+                        <th>Total</th>
+                        <th>Success Rate</th>
+                        <th>Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>isNull</code></td>
+                        <td>llama-3.3-70b</td>
+                        <td>53</td>
+                        <td>64</td>
+                        <td><span class="badge">82.8%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                    <tr>
+                        <td><code>isEmptyString</code></td>
+                        <td>llama-3.3-70b</td>
+                        <td>50</td>
+                        <td>62</td>
+                        <td><span class="badge">80.6%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                    <tr>
+                        <td><code>isNullLike</code></td>
+                        <td>llama-3.3-70b</td>
+                        <td>48</td>
+                        <td>61</td>
+                        <td><span class="badge">78.7%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                    <tr>
+                        <td><code>isObject</code></td>
+                        <td>llama-3.3-70b</td>
+                        <td>49</td>
+                        <td>62</td>
+                        <td><span class="badge">79.0%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                    <tr>
+                        <td><code>isUndefined</code></td>
+                        <td>llama-3.3-70b</td>
+                        <td>55</td>
+                        <td>63</td>
+                        <td><span class="badge">87.3%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                    <tr class="avg-row">
+                        <td>AGGREGATED</td>
+                        <td>-</td>
+                        <td>51</td>
+                        <td>62.4</td>
+                        <td><span class="no-badge">81.7%</span></td>
+                        <td>72.2%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note-box">
+                <strong>Technical Note:</strong> Success Rate reflects <i>zero-human-intervention</i> pass percentage. Coverage metrics represent statement coverage validated through Jest execution.
+            </div>
+        </section>
+
+        <div class="footer">
+            Project Repository: <a href="https://github.com/srinidhi-anand/testcase-gen-ai-ts" class="repo-link">testcase-gen-ai-ts</a> | Contact: <a href="mailto:srinidhianand4@gmail.com" class="repo-link">Srinidhi Anand</a>
+        </div>
+    </div>
+</body>
+</html>

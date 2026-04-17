@@ -294,7 +294,7 @@ If you are a professor or researcher interested in using `ts-genai-test` as a ba
 
 This project was developed with a high-velocity, co-engineering approach, combining human architectural vision with AI pair-programming to deliver robust, state-of-the-art tooling.
 
-- **Architect & Lead Developer:** [Srinidhi Anand](https://github.com/srinidhi-anand)
+- **Architect & Lead Developer:** [Srinidhi Anand](mailto:srinidhianand4@gmail.com) | [GitHub Profile](https://github.com/srinidhi-anand)
 - **Technical Implementation Partner:** Antigravity (Advanced AI Coding Assistant)
 
 ## 📄 License

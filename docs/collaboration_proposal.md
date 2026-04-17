@@ -50,5 +50,5 @@ The next phase of the project involves "Inter-file Analysis"—mapping imports a
 
 I am looking for research faculty from institutes like IISc, IITs, CMU, and Stanford specializing in **Static Analysis, LLMs for Code, or Software Reliability**.
 
-**Architect & Lead:** [Srinidhi Anand](https://github.com/srinidhi-anand)  
+**Architect & Lead:** [Srinidhi Anand](mailto:srinidhianand4@gmail.com) ([GitHub](https://github.com/srinidhi-anand))  
 **Project Repository:** [testcase-gen-ai-ts](https://github.com/srinidhi-anand/testcase-gen-ai-ts)
