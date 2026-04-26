@@ -74,7 +74,7 @@ export function aiModelDecider(complexityScore: number) {
   logger.info(`preference: ${config.model.preference}`)
   if (complexityScore > 60 || config.model.preference === MODEL_PREFERENCE.HIGH_ACCURACY) {
     recommendedModel = MODEL_ADAPTER[MODEL_PREFERENCE.HIGH_ACCURACY].RECOMMENDED_MODEL;
-    llmProvider = MODEL_ADAPTER[MODEL_PREFERENCE.BALANCED].LLM_PROVIDER;
+    llmProvider = MODEL_ADAPTER[MODEL_PREFERENCE.HIGH_ACCURACY].LLM_PROVIDER;
   } else if (complexityScore > 25 || config.model.preference === MODEL_PREFERENCE.BALANCED) {
     recommendedModel = MODEL_ADAPTER[MODEL_PREFERENCE.BALANCED].RECOMMENDED_MODEL;
     llmProvider = MODEL_ADAPTER[MODEL_PREFERENCE.BALANCED].LLM_PROVIDER;
