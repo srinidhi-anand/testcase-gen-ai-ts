@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v2.0.0...v2.0.1) (2026-04-26)
+
+
+### Bug Fixes
+
+* model adapter with proper llm provider changes ([17e2fac](https://github.com/srinidhi-anand/testcase-gen-ai-ts/commit/17e2fac2022160d716c2f98c74be55330d6cb039))
+
 # [2.0.0](https://github.com/srinidhi-anand/testcase-gen-ai-ts/compare/v1.2.2...v2.0.0) (2026-04-16)
 
 
